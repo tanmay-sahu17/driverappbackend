@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "894410278269",
+    "firebase_url": "https://trackmyride123-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "trackmyride123",
+    "storage_bucket": "trackmyride123.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894410278269:android:5529508223d660be93b814",
+        "android_client_info": {
+          "package_name": "driver_app.w1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGJ_-DXjeM70OjziCBG2U7ini-5QDOeVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

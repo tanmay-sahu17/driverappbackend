@@ -198,7 +198,7 @@ class _SplashScreenState extends State<SplashScreen>
                 SafeArea(
                   child: Column(
                     children: [
-                      // Top section with logo
+                      // Top section with title only
                       Expanded(
                         flex: 3,
                         child: Center(
@@ -212,34 +212,7 @@ class _SplashScreenState extends State<SplashScreen>
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      // App Logo Container
-                                      Container(
-                                        padding: const EdgeInsets.all(30),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white.withOpacity(0.15),
-                                          border: Border.all(
-                                            color: Colors.white.withOpacity(0.3),
-                                            width: 3,
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withOpacity(0.3),
-                                              blurRadius: 25,
-                                              offset: const Offset(0, 12),
-                                            ),
-                                          ],
-                                        ),
-                                        child: const Icon(
-                                          Icons.location_on,
-                                          size: 70,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      
-                                      const SizedBox(height: 40),
-                                      
-                                      // App Title
+                                      // App Title - Centered and Larger
                                       ShaderMask(
                                         shaderCallback: (bounds) => LinearGradient(
                                           colors: [
@@ -248,23 +221,23 @@ class _SplashScreenState extends State<SplashScreen>
                                           ],
                                         ).createShader(bounds),
                                         child: const Text(
-                                          'Driver Tracker',
+                                          'Track Bus',
                                           style: TextStyle(
-                                            fontSize: 36,
+                                            fontSize: 38,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
-                                            letterSpacing: 2.0,
+                                            letterSpacing: 2.2,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 12),
+                                      const SizedBox(height: 16),
                                       Text(
                                         'Navigate • Track • Connect',
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.w400,
                                           color: Colors.white.withOpacity(0.9),
-                                          letterSpacing: 1.5,
+                                          letterSpacing: 1.6,
                                         ),
                                       ),
                                     ],
@@ -306,12 +279,12 @@ class _SplashScreenState extends State<SplashScreen>
                                       
                                       // Text below bus - Clean Style
                                       Text(
-                                        'Track Your Bus',
+                                        'Locate Your Bus',
                                         style: TextStyle(
-                                          fontSize: 22,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white.withOpacity(0.95),
-                                          letterSpacing: 1.5,
+                                          letterSpacing: 1.3,
                                           shadows: [
                                             Shadow(
                                               color: Colors.black.withOpacity(0.3),

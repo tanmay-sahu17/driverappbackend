@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Track your route, manage passengers',
+                        'Track Your Route',
                         style: TextStyle(
                           fontSize: 16,
                           color: isDarkMode ? Colors.grey[400] : Colors.grey[600],

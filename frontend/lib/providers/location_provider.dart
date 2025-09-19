@@ -107,13 +107,6 @@ class LocationProvider with ChangeNotifier {
       bool started = await _locationService.startLocationTracking(
         onLocationUpdate: (Position position) {
           _currentPosition = position;
-          print('🔥 GPS UPDATE RECEIVED:');
-          print('📍 Lat: ${position.latitude}');
-          print('📍 Lng: ${position.longitude}');
-          print('🎯 Accuracy: ${position.accuracy}m');
-          print('⚡ Speed: ${position.speed} m/s');
-          print('🕒 Time: ${DateTime.now()}');
-          print('=====================');
           notifyListeners();
           
           // Send location update to backend every time position changes

@@ -53,6 +53,19 @@ const locationLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Rate limiting for ETA calculations (more lenient)
+const etaLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 20, // Max 20 ETA requests per minute
+  message: {
+    success: false,
+    message: 'Too many ETA requests, please wait before requesting again',
+    retryAfter: 60
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 // Custom rate limiter based on user ID
 const createUserBasedLimiter = (windowMs, maxRequests) => {
   return rateLimit({
@@ -77,5 +90,6 @@ module.exports = {
   authLimiter,
   sosLimiter,
   locationLimiter,
+  etaLimiter,
   createUserBasedLimiter
 };

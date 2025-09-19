@@ -4,8 +4,9 @@ import 'package:http/http.dart' as http;
 class ApiService {
   // Base URL for the backend API - Your Node.js backend
   // Use your computer's IP address for real device testing
-  static const String baseUrl = 'http://10.31.15.144:3000/api';
-  // For web testing: static const String baseUrl = 'http://localhost:3000/api';
+  // static const String baseUrl = 'http://10.27.245.57:3000/api';
+  // For emulator testing (10.0.2.2 maps to host machine's localhost): 
+  static const String baseUrl = 'http://10.0.2.2:3000/api';
   
   // Headers for all API requests
   static const Map<String, String> headers = {
@@ -69,8 +70,8 @@ class ApiService {
         'timestamp': DateTime.now().toIso8601String(),
       };
 
-      print('🚨 Sending SOS Alert to: $baseUrl/sos/alert');
-      print('📤 Request body: ${jsonEncode(requestBody)}');
+      print('Sending SOS Alert to: $baseUrl/sos/alert');
+      print('Request body: ${jsonEncode(requestBody)}');
 
       final response = await http.post(
         Uri.parse('$baseUrl/sos/alert'),
@@ -78,41 +79,20 @@ class ApiService {
         body: jsonEncode(requestBody),
       );
 
-      print('📥 SOS alert response status: ${response.statusCode}');
-      print('📥 SOS alert response body: ${response.body}');
+      print('SOS alert response status: ${response.statusCode}');
+      print('SOS alert response body: ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('✅ SOS alert sent successfully');
+        print('SOS alert sent successfully');
         return true;
       } else {
-        print('❌ SOS alert failed with status: ${response.statusCode}');
-        print('❌ Error response: ${response.body}');
+        print('SOS alert failed with status: ${response.statusCode}');
+        print('Error response: ${response.body}');
         return false;
       }
     } catch (e) {
-      print('💥 Error sending SOS alert: $e');
+      print('Error sending SOS alert: $e');
       return false;
-    }
-  }
-
-  /// Get ETA information (mock implementation for now)
-  static Future<Map<String, dynamic>?> getEtaInfo({
-    required double currentLatitude,
-    required double currentLongitude,
-    required String busNumber,
-  }) async {
-    try {
-      // For now, return mock ETA data since ETA calculation requires complex routing
-      await Future.delayed(Duration(milliseconds: 500)); // Simulate API call
-      return {
-        'eta': '12 minutes',
-        'distance': '3.2 km',
-        'nextStop': 'Central Station',
-        'status': 'On Time'
-      };
-    } catch (e) {
-      print('Error fetching ETA info: $e');
-      return null;
     }
   }
 
@@ -153,7 +133,8 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> buses = jsonDecode(response.body)['data'];
+        final responseData = jsonDecode(response.body);
+        final List<dynamic> buses = responseData['data'];
         return buses.cast<Map<String, dynamic>>();
       }
       return [];

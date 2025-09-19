@@ -72,6 +72,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
         // Show signup error dialog if there's an error

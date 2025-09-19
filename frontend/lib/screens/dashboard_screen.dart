@@ -5,7 +5,6 @@ import '../providers/location_provider.dart';
 import '../widgets/bus_selector.dart';
 import '../widgets/gps_toggle.dart';
 import '../widgets/sos_button.dart';
-import '../widgets/eta_display.dart';
 import 'login_screen.dart';
 import 'sos_screen.dart';
 import 'settings_screen.dart';
@@ -252,11 +251,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 
                 // GPS Toggle
                 const GpsToggle(),
-                
-                const SizedBox(height: 16),
-                
-                // ETA Display
-                const EtaDisplay(),
                 
                 const SizedBox(height: 24),
                 

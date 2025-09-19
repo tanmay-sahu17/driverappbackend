@@ -79,14 +79,14 @@ class _SosScreenState extends State<SosScreen> {
       );
 
       if (success) {
-        _showSnackbar('🚨 SOS Alert sent successfully!', Colors.orange);
+        _showSnackbar('SOS Alert sent successfully!', Colors.orange);
         print('✅ SOS Alert sent successfully');
       } else {
         setState(() {
           _isEmergencyActive = false;
           _emergencyMessage = null;
         });
-        _showSnackbar('❌ Failed to send SOS alert. Please try again.', Colors.red);
+        _showSnackbar('Failed to send SOS alert. Please try again.', Colors.red);
         print('❌ SOS Alert failed');
       }
     } catch (e) {

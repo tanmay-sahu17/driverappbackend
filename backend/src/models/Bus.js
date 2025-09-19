@@ -26,8 +26,8 @@ class Bus {
     this.capacity = data.capacity;
     this.amenities = data.amenities || []; // ['WiFi', 'Charging', 'GPS', 'CCTV']
     this.registrationNumber = data.registrationNumber; // Same as busNumber but formatted
-    this.model = data.model || null;
-    this.year = data.year || null;
+    this.model = data.model || data.busModel || null; // Support both field names
+    this.year = data.year || data.manufacturingYear || null; // Support both field names
     this.isActive = data.isActive !== undefined ? data.isActive : true;
     this.isOnline = data.isOnline !== undefined ? data.isOnline : false;
     this.currentStatus = data.currentStatus || 'parked'; // 'running', 'parked', 'maintenance', 'breakdown'

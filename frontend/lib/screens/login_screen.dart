@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               decoration: BoxDecoration(
                 image: const DecorationImage(
-                  image: AssetImage('assets/images/istockphoto-1571533651-1024x1024.png'),
+                  image: AssetImage('assets\images\23108150-removebg-preview.png'),
                   fit: BoxFit.cover,
                   onError: null, // Will show error if image doesn't load
                 ),
@@ -145,12 +145,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ],
                         ),
-                        child: Icon(
-                          Icons.directions_bus,
-                          size: 60,
-                          color: isDarkMode 
-                              ? const Color(0xFF6CB5A8)
-                              : const Color(0xFF4A9B8E),
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          child: Image.asset(
+                            'assets/images/23108150-removebg-preview.png',
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 24),

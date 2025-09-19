@@ -283,7 +283,10 @@ class _BusSelectorState extends State<BusSelector> {
   String _getBusRoute(String busNumber) {
     try {
       final bus = allBuses.firstWhere((b) => b['busNumber'] == busNumber);
-      return '${bus['model'] ?? 'Unknown Model'} - ${bus['busType'] ?? 'Standard'} (${bus['capacity'] ?? 'N/A'} seats)';
+      final model = bus['model'] ?? 'Unknown Model';
+      final busType = bus['busType'] ?? 'Standard';
+      final capacity = bus['capacity'] ?? 'N/A';
+      return '$model - $busType ($capacity seats)';
     } catch (e) {
       // Fallback to mock data
       Bus? mockBus = MockBusData.getBusByNumber(busNumber);

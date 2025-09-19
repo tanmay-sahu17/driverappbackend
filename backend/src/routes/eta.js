@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const ETA = require('../models/ETA');
+const { etaLimiter } = require('../middleware/rateLimiter');
 
 // @route   POST /api/eta/calculate
 // @desc    Calculate ETA between current location and destination
 // @access  Private
-router.post('/calculate', async (req, res) => {
+router.post('/calculate', etaLimiter, async (req, res) => {
   try {
     const { 
       fromLatitude, 

@@ -53,17 +53,6 @@ class SettingsScreen extends StatelessWidget {
           _buildAccountSection(context),
           
           const SizedBox(height: 32),
-          
-          // Developer Section
-          _buildSectionHeader(
-            context, 
-            'Developer', 
-            Icons.code,
-          ),
-          const SizedBox(height: 12),
-          _buildDeveloperSection(context),
-          
-          const SizedBox(height: 32),
         ],
       ),
     );
@@ -471,53 +460,6 @@ class SettingsScreen extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-
-  Widget _buildDeveloperSection(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
-    return Card(
-      elevation: isDarkMode ? 4 : 2,
-      color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: isDarkMode 
-              ? const Color(0xFF6CB5A8).withValues(alpha: 0.2)
-              : const Color(0xFF4A9B8E).withValues(alpha: 0.1),
-          radius: 20,
-          child: Icon(
-            Icons.bug_report,
-            color: isDarkMode ? const Color(0xFF6CB5A8) : const Color(0xFF4A9B8E),
-            size: 20,
-          ),
-        ),
-        title: Text(
-          'API Debug',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: isDarkMode ? Colors.white : Colors.black87,
-          ),
-        ),
-        subtitle: Text(
-          'Test backend API connection',
-          style: TextStyle(
-            color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-            fontSize: 13,
-          ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios,
-          size: 16,
-          color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
-        ),
-        onTap: () {
-          Navigator.pushNamed(context, '/debug');
-        },
-      ),
     );
   }
 }

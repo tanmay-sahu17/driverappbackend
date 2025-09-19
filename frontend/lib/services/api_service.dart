@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class ApiService {
   // Base URL for the backend API - Your Node.js backend
   // Use your computer's IP address for real device testing
-  static const String baseUrl = 'http://10.31.15.146:3000/api';
+  static const String baseUrl = 'http://10.31.15.144:3000/api';
   // For web testing: static const String baseUrl = 'http://localhost:3000/api';
   
   // Headers for all API requests

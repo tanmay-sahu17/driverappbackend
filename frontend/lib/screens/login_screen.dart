@@ -72,21 +72,30 @@ class _LoginScreenState extends State<LoginScreen> {
         return Scaffold(
           body: Stack(
         children: [
-          // Map Background
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF1E3A8A), // Deep blue
-                  Color(0xFF3B82F6), // Blue
-                ],
+          // Real Map Background Image with fallback
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/istockphoto-1571533651-1024x1024.png'),
+                  fit: BoxFit.cover,
+                  onError: null, // Will show error if image doesn't load
+                ),
+                // Fallback gradient if image fails to load
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    const Color(0xFFE8F4F8),
+                    const Color(0xFFF0F8FF),
+                    const Color(0xFFE0F2F1),
+                  ],
+                ),
               ),
             ),
           ),
           
-          // Faded Overlay
+          // Overlay for readability
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -94,14 +103,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 end: Alignment.bottomCenter,
                 colors: isDarkMode
                     ? [
-                        const Color(0xFF000000).withOpacity(0.6),
-                        const Color(0xFF121212).withOpacity(0.7),
-                        const Color(0xFF1E1E1E).withOpacity(0.8),
+                        const Color(0xFF000000).withOpacity(0.5),
+                        const Color(0xFF121212).withOpacity(0.6),
+                        const Color(0xFF1E1E1E).withOpacity(0.7),
                       ]
                     : [
-                        const Color(0xFF000000).withOpacity(0.3),
+                        const Color(0xFFFFFFFF).withOpacity(0.4),
                         const Color(0xFFFFFFFF).withOpacity(0.5),
-                        const Color(0xFFFFFFFF).withOpacity(0.7),
+                        const Color(0xFFFFFFFF).withOpacity(0.6),
                       ],
               ),
             ),

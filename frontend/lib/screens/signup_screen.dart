@@ -98,33 +98,74 @@ class _SignupScreenState extends State<SignupScreen> {
         }
 
         return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.grey),
-          onPressed: () => Navigator.of(context).pop(),
+      body: Container(
+        decoration: BoxDecoration(
+          image: const DecorationImage(
+            image: AssetImage('assets/images/istockphoto-1571533651-1024x1024.png'),
+            fit: BoxFit.cover,
+          ),
+          // Fallback gradient
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFE8F4F8),
+              Color(0xFFF0F8FF),
+              Color(0xFFE0F2F1),
+            ],
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Card(
-              elevation: 8,
-              shadowColor: Colors.black26,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          children: [
+            // Overlay for better readability
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.7),
+                    Colors.white.withOpacity(0.75),
+                    Colors.white.withOpacity(0.8),
+                  ],
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
+            ),
+            // Content
+            SafeArea(
+              child: Column(
+                children: [
+                  // App Bar
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back_ios, color: Colors.grey),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Main Content
+                  Expanded(
+                    child: Center(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: Card(
+                          elevation: 12,
+                          shadowColor: Colors.black38,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(32.0),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
                       // Header
                       Text(
                         'Create Account',
@@ -464,7 +505,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           return ElevatedButton(
                             onPressed: authProvider.isLoading ? null : _handleSignup,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
+                              backgroundColor: isDarkMode 
+                                  ? const Color(0xFF6CB5A8) 
+                                  : const Color(0xFF4A9B8E),
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
@@ -515,12 +558,18 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ],
                       ),
-                    ],
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-          ),
+          ],
         ),
       ),
         );

@@ -6,7 +6,8 @@ class ApiService {
   // Use your computer's IP address for real device testing
   // static const String baseUrl = 'http://10.27.245.57:3000/api';
   // For emulator testing (10.0.2.2 maps to host machine's localhost): 
-  static const String baseUrl = 'http://10.0.2.2:3000/api';
+  // static const String baseUrl = 'http://10.0.2.2:3000/api';
+  static const String baseUrl = 'http://192.168.202.57:3000/api';
   
   // Headers for all API requests
   static const Map<String, String> headers = {

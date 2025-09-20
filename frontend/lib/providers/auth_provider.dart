@@ -28,14 +28,25 @@ class AuthProvider with ChangeNotifier {
   }
 
   void initializeAuth() {
+    // Set initial loading state
+    _setLoading(true);
+    
     // Listen to Firebase auth state changes
     _authService.authStateChanges.listen((User? user) {
       _user = user;
       if (user != null) {
+        print('✅ User session restored: ${user.email}');
         _loadDriverProfile();
       } else {
+        print('❌ No active user session');
         _driverProfile = null;
       }
+      
+      // Auth state is now determined, stop loading
+      if (_isLoading) {
+        _setLoading(false);
+      }
+      
       notifyListeners();
     });
   }
@@ -99,12 +110,39 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  /// Check if user session is available (for app startup)
+  Future<bool> checkAuthStatus() async {
+    try {
+      _setLoading(true);
+      
+      // Firebase automatically restores auth state
+      // We just need to check current user
+      final user = _authService.currentUser;
+      
+      if (user != null) {
+        _user = user;
+        await _loadDriverProfile();
+        print('✅ Existing session found for: ${user.email}');
+        return true;
+      } else {
+        print('❌ No existing session found');
+        return false;
+      }
+    } catch (e) {
+      print('Error checking auth status: $e');
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   /// Sign in method
   Future<void> signIn(String email, String password) async {
     _clearError();
     _setLoading(true);
 
     try {
+      print('🔐 Attempting to sign in user: $email');
       final result = await _authService.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -115,10 +153,13 @@ class AuthProvider with ChangeNotifier {
         await _loadDriverProfile();
         // Clear any existing errors on successful login
         _clearError();
+        print('✅ Sign in successful for: $email');
       } else {
+        print('❌ Sign in failed: ${result.message}');
         _setSignInError(result.message);
       }
     } catch (e) {
+      print('❌ Sign in exception: $e');
       _setSignInError('Sign in failed: ${e.toString()}');
     } finally {
       _setLoading(false);
@@ -188,12 +229,15 @@ class AuthProvider with ChangeNotifier {
   /// Sign out method
   Future<void> signOut() async {
     try {
+      print('🔓 Signing out user...');
       await _authService.signOut();
       _user = null;
       _driverProfile = null;
       _clearError();
+      print('✅ User signed out successfully');
       notifyListeners();
     } catch (e) {
+      print('❌ Sign out error: $e');
       _setError('Sign out failed: ${e.toString()}');
     }
   }

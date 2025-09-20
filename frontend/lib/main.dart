@@ -45,10 +45,11 @@ class DriverApp extends StatelessWidget {
             theme: themeProvider.lightTheme,
             darkTheme: themeProvider.darkTheme,
             themeMode: themeProvider.themeMode,
-            home: const SplashScreen(),
+            home: const AuthWrapper(),
             routes: {
               '/login': (context) => const LoginScreen(),
               '/dashboard': (context) => const DashboardScreen(),
+              '/splash': (context) => const SplashScreen(),
             },
           );
         },
@@ -57,14 +58,48 @@ class DriverApp extends StatelessWidget {
   }
 }
 
-class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
 
   @override
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
+  bool _isInitializing = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    // Show splash screen for minimum 2 seconds for branding
+    await Future.delayed(const Duration(seconds: 2));
+    
+    // Wait for auth state to be determined
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    
+    // Small delay to ensure Firebase auth state is loaded
+    await Future.delayed(const Duration(milliseconds: 500));
+    
+    if (mounted) {
+      setState(() {
+        _isInitializing = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isInitializing) {
+      return const SplashScreen();
+    }
+
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
-        // Show loading screen while checking auth state
+        // Show loading screen if still determining auth state
         if (authProvider.isLoading) {
           return const LoadingScreen();
         }

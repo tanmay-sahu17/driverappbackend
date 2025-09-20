@@ -123,11 +123,28 @@ class LocationProvider with ChangeNotifier {
         _locationUpdateTimer = Timer.periodic(
           const Duration(seconds: 10),
           (timer) {
+            final now = DateTime.now();
+            final timeString = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}';
+            
+            print('⏰ GPS UPDATE TIMER TRIGGERED at $timeString');
+            print('🔄 Timer tick #${timer.tick}');
+            
             if (_currentPosition != null && 
                 driverId != null && 
                 _selectedBusNumber != null) {
+              print('📍 Sending location update to backend...');
+              print('   Lat: ${_currentPosition!.latitude}');
+              print('   Lng: ${_currentPosition!.longitude}');
+              print('   Driver: $driverId');
+              print('   Bus: $_selectedBusNumber');
               _sendLocationUpdate(driverId, _currentPosition!);
+            } else {
+              print('❌ Skipping update - Missing data:');
+              print('   Position: ${_currentPosition != null ? 'Available' : 'Missing'}');
+              print('   DriverID: ${driverId != null ? 'Available' : 'Missing'}');
+              print('   BusNumber: ${_selectedBusNumber != null ? 'Available' : 'Missing'}');
             }
+            print('==========================================');
           },
         );
       } else {
@@ -157,14 +174,29 @@ class LocationProvider with ChangeNotifier {
   /// Send location update to backend
   Future<void> _sendLocationUpdate(String driverId, Position position) async {
     try {
-      await ApiService.updateLocation(
+      final now = DateTime.now();
+      final timeString = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}';
+      
+      print('🚀 SENDING GPS UPDATE at $timeString');
+      print('📱 Driver: $driverId');
+      print('🚌 Bus: $_selectedBusNumber');
+      print('📍 Coordinates: ${position.latitude}, ${position.longitude}');
+      
+      bool success = await ApiService.updateLocation(
         driverId: driverId,
         busNumber: _selectedBusNumber!,
         latitude: position.latitude,
         longitude: position.longitude,
       );
+      
+      if (success) {
+        print('✅ GPS UPDATE SUCCESSFUL at $timeString');
+      } else {
+        print('❌ GPS UPDATE FAILED at $timeString');
+      }
+      print('==========================================');
     } catch (e) {
-      print('Failed to send location update: $e');
+      print('🔥 GPS UPDATE ERROR: $e');
     }
   }
 

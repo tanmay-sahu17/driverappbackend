@@ -13,13 +13,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _phoneController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -28,8 +28,16 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       
-      await authProvider.signIn(
-        _emailController.text.trim(),
+      // Clean phone number (remove spaces, dashes, etc.)
+      String cleanPhone = _phoneController.text.trim().replaceAll(RegExp(r'[^\d]'), '');
+      
+      // For numbers longer than 10 digits, take last 10 (for +91 numbers)
+      if (cleanPhone.length > 10) {
+        cleanPhone = cleanPhone.substring(cleanPhone.length - 10);
+      }
+      
+      await authProvider.signInWithPhone(
+        cleanPhone,
         _passwordController.text,
       );
       
@@ -77,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               decoration: BoxDecoration(
                 image: const DecorationImage(
-                  image: AssetImage('assets\images\23108150-removebg-preview.png'),
+                  image: AssetImage('assets/images/23108150-removebg-preview.png'),
                   fit: BoxFit.cover,
                   onError: null, // Will show error if image doesn't load
                 ),
@@ -223,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 32),
                           
-                          // Email Field
+                          // Phone Number Field
                           Container(
                             decoration: BoxDecoration(
                               color: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
@@ -239,22 +247,27 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                             child: TextFormField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
+                              controller: _phoneController,
+                              keyboardType: TextInputType.phone,
                               style: TextStyle(
                                 color: isDarkMode ? Colors.white : Colors.black,
                               ),
                               decoration: InputDecoration(
-                                labelText: 'Email',
+                                labelText: 'Phone Number',
                                 labelStyle: TextStyle(
                                   color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                                 ),
-                                hintText: 'driver@company.com',
+                                hintText: '9876543210',
                                 hintStyle: TextStyle(
                                   color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
                                 ),
+                                helperText: 'Enter 10-digit mobile number',
+                                helperStyle: TextStyle(
+                                  color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+                                  fontSize: 12,
+                                ),
                                 prefixIcon: Icon(
-                                  Icons.email_outlined,
+                                  Icons.phone_outlined,
                                   color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                                 ),
                                 border: const OutlineInputBorder(
@@ -279,11 +292,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter your email';
+                                  return 'Please enter your phone number';
                                 }
-                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                                  return 'Please enter a valid email';
+                                
+                                // Remove any spaces, dashes, plus signs, or other characters
+                                String cleanValue = value.replaceAll(RegExp(r'[^\d]'), '');
+                                
+                                // Check if it's at least 10 digits (to handle +91 numbers too)
+                                if (cleanValue.length < 10) {
+                                  return 'Please enter a valid phone number';
                                 }
+                                
+                                // If it has more than 10 digits, take last 10 (for +91 numbers)
+                                if (cleanValue.length > 10) {
+                                  cleanValue = cleanValue.substring(cleanValue.length - 10);
+                                }
+                                
                                 return null;
                               },
                             ),

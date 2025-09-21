@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'providers/auth_provider.dart';
+import 'providers/auth_provider.dart' as app_auth;
 import 'providers/location_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/splash_screen.dart';
@@ -18,6 +20,18 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     print('✅ Firebase initialized successfully');
+    
+    // For emulator testing - Connect to Firebase Auth emulator if needed
+    if (kDebugMode) {
+      try {
+        // Uncomment below lines if you want to use Firebase Auth emulator
+        // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+        print('🔧 Running in debug mode - using production Firebase Auth');
+      } catch (e) {
+        print('⚠️ Auth emulator connection failed, using production: $e');
+      }
+    }
+    
   } catch (e) {
     print('❌ Firebase initialization error: $e');
     print('📱 Continuing without Firebase for development...');
@@ -33,7 +47,7 @@ class DriverApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => app_auth.AuthProvider()),
         ChangeNotifierProvider(create: (context) => LocationProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
@@ -79,7 +93,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     await Future.delayed(const Duration(seconds: 2));
     
     // Wait for auth state to be determined
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final authProvider = Provider.of<app_auth.AuthProvider>(context, listen: false);
     
     // Small delay to ensure Firebase auth state is loaded
     await Future.delayed(const Duration(milliseconds: 500));
@@ -97,7 +111,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
       return const SplashScreen();
     }
 
-    return Consumer<AuthProvider>(
+    return Consumer<app_auth.AuthProvider>(
       builder: (context, authProvider, child) {
         // Show loading screen if still determining auth state
         if (authProvider.isLoading) {

@@ -23,9 +23,15 @@ class AuthService {
     required String password,
   }) async {
     try {
+      // Add timeout to handle network issues
       UserCredential result = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
+      ).timeout(
+        Duration(seconds: 30),
+        onTimeout: () {
+          throw Exception('Request timeout. Please check your internet connection.');
+        },
       );
       
       return AuthResult(
@@ -34,6 +40,7 @@ class AuthService {
         message: 'Sign in successful',
       );
     } on FirebaseAuthException catch (e) {
+      print('Firebase Auth Exception: ${e.code} - ${e.message}');
       String errorMessage;
       switch (e.code) {
         case 'user-not-found':
@@ -51,6 +58,9 @@ class AuthService {
         case 'too-many-requests':
           errorMessage = 'Too many attempts. Please try again later.';
           break;
+        case 'network-request-failed':
+          errorMessage = 'Network error. Please check your internet connection and try again.';
+          break;
         default:
           errorMessage = 'Sign in failed. Please try again.';
       }
@@ -60,9 +70,17 @@ class AuthService {
         message: errorMessage,
       );
     } catch (e) {
+      print('Auth service error details: $e');
+      String errorMessage = 'An unexpected error occurred. Please try again.';
+      
+      // Check for network-related errors
+      if (e.toString().contains('network') || e.toString().contains('timeout')) {
+        errorMessage = 'Network error. Please check your internet connection.';
+      }
+      
       return AuthResult(
         success: false,
-        message: 'An unexpected error occurred. Please try again.',
+        message: errorMessage,
       );
     }
   }

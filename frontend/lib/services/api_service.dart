@@ -7,7 +7,7 @@ class ApiService {
   // static const String baseUrl = 'http://10.27.245.57:3000/api';
   // For emulator testing (10.0.2.2 maps to host machine's localhost): 
   // static const String baseUrl = 'http://10.0.2.2:3000/api';
-  static const String baseUrl = 'http://192.168.202.57:3000/api';
+  static const String baseUrl = 'http://10.238.9.57:3000/api';
   
   // Headers for all API requests
   static const Map<String, String> headers = {
@@ -184,6 +184,35 @@ class ApiService {
     } catch (e) {
       print('Error testing API connection: $e');
       return false;
+    }
+  }
+
+  /// Get email by phone number for login
+  static Future<String?> getEmailByPhone(String phoneNumber) async {
+    try {
+      print('Getting email for phone: $phoneNumber');
+      
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/get-email-by-phone'),
+        headers: headers,
+        body: jsonEncode({
+          'phoneNumber': phoneNumber,
+        }),
+      );
+
+      print('Get email response: ${response.statusCode}');
+      print('Get email body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['email'];
+      } else {
+        print('Failed to get email: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error getting email by phone: $e');
+      return null;
     }
   }
 

@@ -3,6 +3,48 @@ const router = express.Router();
 const Driver = require('../models/Driver');
 const { auth } = require('../config/firebase');
 
+// @route   POST /api/auth/get-email-by-phone
+// @desc    Get email by phone number for login
+// @access  Public
+router.post('/get-email-by-phone', async (req, res) => {
+  try {
+    const { phoneNumber } = req.body;
+
+    if (!phoneNumber) {
+      return res.status(400).json({
+        success: false,
+        message: 'Phone number is required'
+      });
+    }
+
+    // Clean phone number (remove spaces, dashes, etc.)
+    const cleanPhone = phoneNumber.replace(/\D/g, '');
+    
+    // Find driver by phone number
+    const driver = await Driver.findByPhone(cleanPhone);
+    
+    if (!driver || !driver.email) {
+      return res.status(404).json({
+        success: false,
+        message: 'No account found with this phone number'
+      });
+    }
+
+    res.json({
+      success: true,
+      email: driver.email,
+      message: 'Email found for phone number'
+    });
+
+  } catch (error) {
+    console.error('Error getting email by phone:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
 // @route   POST /api/auth/register
 // @desc    Register new driver
 // @access  Public
@@ -30,6 +72,7 @@ router.post('/register', async (req, res) => {
     const driver = new Driver({
       id: userRecord.uid,
       driverName,
+      email,
       phoneNumber,
       licenseNumber,
       licenseType: 'commercial',

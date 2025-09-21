@@ -136,7 +136,50 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  /// Sign in method
+  /// Sign in with phone number (finds email first)
+  Future<void> signInWithPhone(String phoneNumber, String password) async {
+    _clearError();
+    _setLoading(true);
+
+    try {
+      print('🔐 Attempting to sign in with phone: $phoneNumber');
+      
+      // First, get email associated with phone number
+      final email = await ApiService.getEmailByPhone(phoneNumber);
+      
+      if (email == null) {
+        print('❌ No email found for phone number: $phoneNumber');
+        _setSignInError('No account found with this phone number');
+        return;
+      }
+      
+      print('📧 Found email for phone $phoneNumber: $email');
+      
+      // Now sign in with email and password using Firebase Auth
+      final result = await _authService.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (result.success) {
+        _user = result.user;
+        await _loadDriverProfile();
+        // Clear any existing errors on successful login
+        _clearError();
+        print('✅ Sign in successful for phone: $phoneNumber');
+      } else {
+        print('❌ Sign in failed: ${result.message}');
+        _setSignInError(result.message);
+      }
+    } catch (e) {
+      print('❌ Sign in exception: $e');
+      _setSignInError('Sign in failed: ${e.toString()}');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  /// Sign in method (original email-based)
   Future<void> signIn(String email, String password) async {
     _clearError();
     _setLoading(true);

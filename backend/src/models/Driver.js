@@ -5,6 +5,7 @@ class Driver {
   constructor(data) {
     this.id = data.id || uuidv4();
     this.driverName = data.driverName;
+    this.email = data.email;
     this.phoneNumber = data.phoneNumber;
     this.licenseNumber = data.licenseNumber;
     this.licenseType = data.licenseType; // 'light', 'heavy', 'commercial'
@@ -48,16 +49,39 @@ class Driver {
   // Find driver by phone number
   static async findByPhone(phoneNumber) {
     try {
-      const snapshot = await db.collection('drivers')
-        .where('phoneNumber', '==', phoneNumber)
-        .get();
+      // Clean phone number and try different formats
+      const cleanPhone = phoneNumber.replace(/\D/g, '');
       
-      if (snapshot.empty) {
-        return null;
+      // For numbers longer than 10 digits, get last 10 (for +91 numbers)
+      const normalizedPhone = cleanPhone.length > 10 ? 
+        cleanPhone.substring(cleanPhone.length - 10) : cleanPhone;
+      
+      const phoneFormats = [
+        cleanPhone,           // Original clean number
+        normalizedPhone,      // Last 10 digits
+        `+91${normalizedPhone}`, // With +91 prefix
+        `+91-${normalizedPhone}`, // With +91- prefix  
+        `91${normalizedPhone}`,   // With 91 prefix
+        phoneNumber          // Original format
+      ];
+
+      console.log(`🔍 Searching for driver with phone formats:`, phoneFormats);
+
+      for (const format of phoneFormats) {
+        const snapshot = await db.collection('drivers')
+          .where('phoneNumber', '==', format)
+          .get();
+        
+        if (!snapshot.empty) {
+          const doc = snapshot.docs[0];
+          const driver = new Driver({ id: doc.id, ...doc.data() });
+          console.log(`✅ Found driver: ${driver.driverName} with phone: ${format}`);
+          return driver;
+        }
       }
       
-      const doc = snapshot.docs[0];
-      return new Driver({ id: doc.id, ...doc.data() });
+      console.log(`❌ No driver found with phone: ${phoneNumber}`);
+      return null;
     } catch (error) {
       console.error('Error finding driver by phone:', error);
       throw error;
@@ -79,6 +103,25 @@ class Driver {
       return new Driver({ id: doc.id, ...doc.data() });
     } catch (error) {
       console.error('Error finding driver by license:', error);
+      throw error;
+    }
+  }
+
+  // Find driver by email
+  static async findByEmail(email) {
+    try {
+      const snapshot = await db.collection('drivers')
+        .where('email', '==', email)
+        .get();
+      
+      if (snapshot.empty) {
+        return null;
+      }
+      
+      const doc = snapshot.docs[0];
+      return new Driver({ id: doc.id, ...doc.data() });
+    } catch (error) {
+      console.error('Error finding driver by email:', error);
       throw error;
     }
   }
@@ -269,10 +312,10 @@ class Driver {
     const data = {
       id: this.id,
       driverName: this.driverName,
+      email: this.email,
       phoneNumber: this.phoneNumber,
       licenseNumber: this.licenseNumber,
       licenseType: this.licenseType || 'commercial',
-      operatorId: this.operatorId,
       status: this.status,
       assignedBusId: this.assignedBusId,
       isAvailable: this.isAvailable(),
@@ -281,6 +324,10 @@ class Driver {
     };
 
     // Only include fields that are not undefined
+    if (this.operatorId !== undefined && this.operatorId !== null) {
+      data.operatorId = this.operatorId;
+    }
+    
     if (this.licenseExpiry !== undefined) {
       data.licenseExpiry = this.licenseExpiry;
       data.isLicenseValid = this.isLicenseValid();

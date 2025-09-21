@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               decoration: BoxDecoration(
                 image: const DecorationImage(
-                  image: AssetImage('assets/images/23108150-removebg-preview.png'),
+                  image: AssetImage('assets/images/istockphoto-1571533651-1024x1024.png'),
                   fit: BoxFit.cover,
                   onError: null, // Will show error if image doesn't load
                 ),

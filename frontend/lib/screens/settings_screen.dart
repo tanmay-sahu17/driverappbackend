@@ -109,7 +109,7 @@ class SettingsScreen extends StatelessWidget {
                 leading: CircleAvatar(
                   backgroundColor: isDarkMode ? const Color(0xFF6CB5A8) : const Color(0xFF4A9B8E),
                   child: Text(
-                    (authProvider.user?.displayName ?? 'D')[0].toUpperCase(),
+                    (authProvider.driverProfile?['name'] ?? 'D')[0].toUpperCase(),
                     style: TextStyle(
                       color: isDarkMode ? Colors.black : Colors.white,
                       fontWeight: FontWeight.bold,
@@ -117,11 +117,11 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 title: Text(
-                  authProvider.user?.displayName ?? l10n.driver,
+                  authProvider.driverProfile?['name'] ?? l10n.driver,
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 subtitle: Text(
-                  authProvider.user?.email ?? '',
+                  authProvider.driverProfile?['contactNumber'] ?? '',
                   style: TextStyle(
                     color: isDarkMode ? Colors.white70 : Colors.grey[600],
                   ),

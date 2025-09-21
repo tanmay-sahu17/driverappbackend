@@ -3,19 +3,21 @@ const { v4: uuidv4 } = require('uuid');
 
 class Driver {
   constructor(data) {
-    this.id = data.id || uuidv4();
-    this.driverName = data.driverName;
-    this.email = data.email;
-    this.phoneNumber = data.phoneNumber;
+    this.driverId = data.driverId || uuidv4();
+    this.name = data.name;
     this.licenseNumber = data.licenseNumber;
-    this.licenseType = data.licenseType; // 'light', 'heavy', 'commercial'
-    this.licenseExpiry = data.licenseExpiry;
-    this.operatorId = data.operatorId;
-    this.status = data.status || 'active'; // 'active', 'inactive', 'suspended'
-    this.assignedBusId = data.assignedBusId || null;
-    this.experience = data.experience; // years
+    this.contactNumber = data.contactNumber;
+    this.dob = data.dob;
+    this.emergencyContactNumber = data.emergencyContactNumber;
+    this.password = data.password;
+    this.aadharCardNumber = data.aadharCardNumber;
+    this.joiningDate = data.joiningDate || new Date();
+    this.experience = data.experience;
     this.address = data.address;
-    this.emergencyContact = data.emergencyContact;
+    this.city = data.city;
+    this.state = data.state;
+    this.assignedBusId = data.assignedBusId || null;
+    this.status = data.status || 'available'; // 'available', 'on-duty', 'off-duty'
     this.createdAt = data.createdAt || new Date();
     this.updatedAt = data.updatedAt || new Date();
   }
@@ -24,8 +26,8 @@ class Driver {
   async save() {
     try {
       const driverData = this.toJSON();
-      await db.collection('drivers').doc(this.id).set(driverData);
-      console.log(`✅ Driver ${this.driverName} saved successfully`);
+      await db.collection('drivers').doc(this.driverId).set(driverData);
+      console.log(`✅ Driver ${this.name} saved successfully`);
     } catch (error) {
       console.error('Error saving driver:', error);
       throw error;
@@ -33,24 +35,24 @@ class Driver {
   }
 
   // Find driver by ID
-  static async findById(id) {
+  static async findById(driverId) {
     try {
-      const doc = await db.collection('drivers').doc(id).get();
+      const doc = await db.collection('drivers').doc(driverId).get();
       if (!doc.exists) {
         return null;
       }
-      return new Driver({ id: doc.id, ...doc.data() });
+      return new Driver({ driverId: doc.id, ...doc.data() });
     } catch (error) {
       console.error('Error finding driver by ID:', error);
       throw error;
     }
   }
 
-  // Find driver by phone number
-  static async findByPhone(phoneNumber) {
+  // Find driver by contact number
+  static async findByContactNumber(contactNumber) {
     try {
-      // Clean phone number and try different formats
-      const cleanPhone = phoneNumber.replace(/\D/g, '');
+      // Clean contact number and try different formats
+      const cleanPhone = contactNumber.replace(/\D/g, '');
       
       // For numbers longer than 10 digits, get last 10 (for +91 numbers)
       const normalizedPhone = cleanPhone.length > 10 ? 
@@ -62,28 +64,28 @@ class Driver {
         `+91${normalizedPhone}`, // With +91 prefix
         `+91-${normalizedPhone}`, // With +91- prefix  
         `91${normalizedPhone}`,   // With 91 prefix
-        phoneNumber          // Original format
+        contactNumber          // Original format
       ];
 
-      console.log(`🔍 Searching for driver with phone formats:`, phoneFormats);
+      console.log(`🔍 Searching for driver with contact number formats:`, phoneFormats);
 
       for (const format of phoneFormats) {
         const snapshot = await db.collection('drivers')
-          .where('phoneNumber', '==', format)
+          .where('contactNumber', '==', format)
           .get();
         
         if (!snapshot.empty) {
           const doc = snapshot.docs[0];
-          const driver = new Driver({ id: doc.id, ...doc.data() });
-          console.log(`✅ Found driver: ${driver.driverName} with phone: ${format}`);
+          const driver = new Driver({ driverId: doc.id, ...doc.data() });
+          console.log(`✅ Found driver: ${driver.name} with contact: ${format}`);
           return driver;
         }
       }
       
-      console.log(`❌ No driver found with phone: ${phoneNumber}`);
+      console.log(`❌ No driver found with contact number: ${contactNumber}`);
       return null;
     } catch (error) {
-      console.error('Error finding driver by phone:', error);
+      console.error('Error finding driver by contact number:', error);
       throw error;
     }
   }
@@ -100,18 +102,18 @@ class Driver {
       }
       
       const doc = snapshot.docs[0];
-      return new Driver({ id: doc.id, ...doc.data() });
+      return new Driver({ driverId: doc.id, ...doc.data() });
     } catch (error) {
       console.error('Error finding driver by license:', error);
       throw error;
     }
   }
 
-  // Find driver by email
-  static async findByEmail(email) {
+  // Find driver by aadhar card number
+  static async findByAadhar(aadharCardNumber) {
     try {
       const snapshot = await db.collection('drivers')
-        .where('email', '==', email)
+        .where('aadharCardNumber', '==', aadharCardNumber)
         .get();
       
       if (snapshot.empty) {
@@ -119,45 +121,48 @@ class Driver {
       }
       
       const doc = snapshot.docs[0];
-      return new Driver({ id: doc.id, ...doc.data() });
+      return new Driver({ driverId: doc.id, ...doc.data() });
     } catch (error) {
-      console.error('Error finding driver by email:', error);
+      console.error('Error finding driver by aadhar:', error);
       throw error;
     }
   }
 
-  // Get all drivers by operator
-  static async getByOperator(operatorId) {
+  // Authenticate driver with contact number and password
+  static async authenticate(contactNumber, password) {
     try {
-      const snapshot = await db.collection('drivers')
-        .where('operatorId', '==', operatorId)
-        .orderBy('driverName')
-        .get();
+      const driver = await this.findByContactNumber(contactNumber);
       
-      return snapshot.docs.map(doc => 
-        new Driver({ id: doc.id, ...doc.data() })
-      );
+      if (!driver) {
+        console.log(`❌ No driver found with contact number: ${contactNumber}`);
+        return null;
+      }
+
+      // Check password (in production, use bcrypt)
+      if (driver.password !== password) {
+        console.log(`❌ Invalid password for driver: ${driver.name}`);
+        return null;
+      }
+
+      console.log(`✅ Authentication successful for driver: ${driver.name}`);
+      return driver;
     } catch (error) {
-      console.error('Error getting drivers by operator:', error);
+      console.error('Error authenticating driver:', error);
       throw error;
     }
   }
 
   // Get available drivers (not assigned to any bus)
-  static async getAvailableDrivers(operatorId = null) {
+  static async getAvailableDrivers() {
     try {
-      let query = db.collection('drivers')
-        .where('status', '==', 'active')
-        .where('assignedBusId', '==', null);
-      
-      if (operatorId) {
-        query = query.where('operatorId', '==', operatorId);
-      }
-      
-      const snapshot = await query.orderBy('driverName').get();
+      const snapshot = await db.collection('drivers')
+        .where('status', '==', 'available')
+        .where('assignedBusId', '==', null)
+        .orderBy('name')
+        .get();
       
       return snapshot.docs.map(doc => 
-        new Driver({ id: doc.id, ...doc.data() })
+        new Driver({ driverId: doc.id, ...doc.data() })
       );
     } catch (error) {
       console.error('Error getting available drivers:', error);
@@ -169,14 +174,14 @@ class Driver {
   static async searchByName(searchTerm) {
     try {
       const snapshot = await db.collection('drivers')
-        .where('driverName', '>=', searchTerm)
-        .where('driverName', '<=', searchTerm + '\uf8ff')
-        .orderBy('driverName')
+        .where('name', '>=', searchTerm)
+        .where('name', '<=', searchTerm + '\uf8ff')
+        .orderBy('name')
         .limit(20)
         .get();
       
       return snapshot.docs.map(doc => 
-        new Driver({ id: doc.id, ...doc.data() })
+        new Driver({ driverId: doc.id, ...doc.data() })
       );
     } catch (error) {
       console.error('Error searching drivers:', error);
@@ -189,14 +194,15 @@ class Driver {
     try {
       // Don't allow updating certain fields
       const allowedUpdates = {
-        driverName: updates.driverName,
-        phoneNumber: updates.phoneNumber,
+        name: updates.name,
+        contactNumber: updates.contactNumber,
         licenseNumber: updates.licenseNumber,
-        licenseType: updates.licenseType,
-        licenseExpiry: updates.licenseExpiry,
+        dob: updates.dob,
+        emergencyContactNumber: updates.emergencyContactNumber,
         experience: updates.experience,
         address: updates.address,
-        emergencyContact: updates.emergencyContact,
+        city: updates.city,
+        state: updates.state,
         updatedAt: new Date()
       };
 
@@ -211,8 +217,8 @@ class Driver {
       Object.assign(this, allowedUpdates);
 
       // Update in database
-      await db.collection('drivers').doc(this.id).update(allowedUpdates);
-      console.log(`✅ Driver ${this.driverName} updated successfully`);
+      await db.collection('drivers').doc(this.driverId).update(allowedUpdates);
+      console.log(`✅ Driver ${this.name} updated successfully`);
     } catch (error) {
       console.error('Error updating driver:', error);
       throw error;
@@ -222,7 +228,7 @@ class Driver {
   // Update driver status
   async updateStatus(newStatus) {
     try {
-      const validStatuses = ['active', 'inactive', 'suspended'];
+      const validStatuses = ['available', 'on-duty', 'off-duty'];
       if (!validStatuses.includes(newStatus)) {
         throw new Error(`Invalid status. Must be one of: ${validStatuses.join(', ')}`);
       }
@@ -230,12 +236,12 @@ class Driver {
       this.status = newStatus;
       this.updatedAt = new Date();
 
-      await db.collection('drivers').doc(this.id).update({
+      await db.collection('drivers').doc(this.driverId).update({
         status: newStatus,
         updatedAt: this.updatedAt
       });
 
-      console.log(`✅ Driver ${this.driverName} status updated to ${newStatus}`);
+      console.log(`✅ Driver ${this.name} status updated to ${newStatus}`);
     } catch (error) {
       console.error('Error updating driver status:', error);
       throw error;
@@ -246,14 +252,16 @@ class Driver {
   async assignToBus(busId) {
     try {
       this.assignedBusId = busId;
+      this.status = 'on-duty';
       this.updatedAt = new Date();
 
-      await db.collection('drivers').doc(this.id).update({
+      await db.collection('drivers').doc(this.driverId).update({
         assignedBusId: busId,
+        status: 'on-duty',
         updatedAt: this.updatedAt
       });
 
-      console.log(`✅ Driver ${this.driverName} assigned to bus ${busId}`);
+      console.log(`✅ Driver ${this.name} assigned to bus ${busId}`);
     } catch (error) {
       console.error('Error assigning driver to bus:', error);
       throw error;
@@ -264,88 +272,49 @@ class Driver {
   async removeFromBus() {
     try {
       this.assignedBusId = null;
+      this.status = 'available';
       this.updatedAt = new Date();
 
-      await db.collection('drivers').doc(this.id).update({
+      await db.collection('drivers').doc(this.driverId).update({
         assignedBusId: null,
+        status: 'available',
         updatedAt: this.updatedAt
       });
 
-      console.log(`✅ Driver ${this.driverName} removed from bus assignment`);
+      console.log(`✅ Driver ${this.name} removed from bus assignment`);
     } catch (error) {
       console.error('Error removing driver from bus:', error);
       throw error;
     }
   }
 
-  // Get assigned bus details
-  async getAssignedBus() {
-    try {
-      if (!this.assignedBusId) {
-        return null;
-      }
-
-      const Bus = require('./Bus');
-      return await Bus.findById(this.assignedBusId);
-    } catch (error) {
-      console.error('Error getting assigned bus:', error);
-      throw error;
-    }
-  }
-
-  // Validate license expiry
-  isLicenseValid() {
-    if (!this.licenseExpiry) return false;
-    const expiryDate = new Date(this.licenseExpiry);
-    return expiryDate > new Date();
-  }
-
   // Check if driver is available for assignment
   isAvailable() {
-    return this.status === 'active' && 
-           this.assignedBusId === null && 
-           this.isLicenseValid();
+    return this.status === 'available' && this.assignedBusId === null;
   }
 
   // Convert to JSON
   toJSON() {
-    const data = {
-      id: this.id,
-      driverName: this.driverName,
-      email: this.email,
-      phoneNumber: this.phoneNumber,
+    return {
+      driverId: this.driverId,
+      name: this.name,
       licenseNumber: this.licenseNumber,
-      licenseType: this.licenseType || 'commercial',
-      status: this.status,
+      contactNumber: this.contactNumber,
+      dob: this.dob,
+      emergencyContactNumber: this.emergencyContactNumber,
+      password: this.password,
+      aadharCardNumber: this.aadharCardNumber,
+      joiningDate: this.joiningDate,
+      experience: this.experience,
+      address: this.address,
+      city: this.city,
+      state: this.state,
       assignedBusId: this.assignedBusId,
+      status: this.status,
       isAvailable: this.isAvailable(),
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };
-
-    // Only include fields that are not undefined
-    if (this.operatorId !== undefined && this.operatorId !== null) {
-      data.operatorId = this.operatorId;
-    }
-    
-    if (this.licenseExpiry !== undefined) {
-      data.licenseExpiry = this.licenseExpiry;
-      data.isLicenseValid = this.isLicenseValid();
-    }
-    
-    if (this.experience !== undefined) {
-      data.experience = this.experience;
-    }
-    
-    if (this.address !== undefined) {
-      data.address = this.address;
-    }
-    
-    if (this.emergencyContact !== undefined) {
-      data.emergencyContact = this.emergencyContact;
-    }
-
-    return data;
   }
 }
 

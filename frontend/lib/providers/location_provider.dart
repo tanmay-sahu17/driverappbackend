@@ -96,6 +96,36 @@ class LocationProvider with ChangeNotifier {
     _setError(null);
 
     try {
+      // Check tracking time validation first
+      print('🕐 Checking tracking time validation...');
+      final trackingStatus = await ApiService.getTrackingStatus(driverId);
+      
+      if (trackingStatus == null || trackingStatus['success'] != true) {
+        _setError('❌ Failed to check tracking status. Please try again.');
+        _setLoading(false);
+        return false;
+      }
+      
+      final canStartTracking = trackingStatus['data']['canStartTracking'] ?? false;
+      if (!canStartTracking) {
+        final reason = trackingStatus['data']['reason'] ?? 'Tracking not allowed';
+        final timeUntilStart = trackingStatus['data']['timeUntilStart'];
+        final timeAfterEnd = trackingStatus['data']['timeAfterEnd'];
+        
+        String errorMessage = '⏰ $reason';
+        if (timeUntilStart != null) {
+          errorMessage = '⏰ Tracking starts later. Please wait $timeUntilStart';
+        } else if (timeAfterEnd != null) {
+          errorMessage = '⏰ Tracking window closed $timeAfterEnd ago. Contact administrator.';
+        }
+        
+        _setError(errorMessage);
+        _setLoading(false);
+        return false;
+      }
+      
+      print('✅ Time validation passed - starting location tracking');
+
       // First ensure we have location permission and get current location
       bool hasLocation = await initializeLocation();
       if (!hasLocation) {
@@ -111,7 +141,7 @@ class LocationProvider with ChangeNotifier {
           
           // Send location update to backend every time position changes
           if (driverId != null && _selectedBusNumber != null) {
-            _sendLocationUpdate(driverId, position);
+            _sendLocationUpdateWithValidation(driverId, position);
           }
         },
       );
@@ -197,6 +227,43 @@ class LocationProvider with ChangeNotifier {
       print('==========================================');
     } catch (e) {
       print('🔥 GPS UPDATE ERROR: $e');
+    }
+  }
+
+  /// Send location update with time validation
+  Future<void> _sendLocationUpdateWithValidation(String driverId, Position position) async {
+    try {
+      final now = DateTime.now();
+      final timeString = '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}';
+      
+      print('🚀 SENDING VALIDATED GPS UPDATE at $timeString');
+      print('📱 Driver: $driverId');
+      print('🚌 Bus: $_selectedBusNumber');
+      print('📍 Coordinates: ${position.latitude}, ${position.longitude}');
+      
+      final result = await ApiService.updateLocationWithValidation(
+        driverId: driverId,
+        busNumber: _selectedBusNumber!,
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
+      
+      if (result['success'] == true) {
+        print('✅ VALIDATED GPS UPDATE SUCCESSFUL at $timeString');
+      } else {
+        print('❌ VALIDATED GPS UPDATE FAILED at $timeString');
+        print('🔍 Reason: ${result['message']}');
+        
+        // Handle time validation failures
+        if (result['code'] == 'TRACKING_NOT_ALLOWED') {
+          print('⏰ Time validation failed - stopping tracking');
+          stopTracking();
+          _setError('⏰ ${result['message']} - Tracking stopped automatically.');
+        }
+      }
+      print('==========================================');
+    } catch (e) {
+      print('🔥 VALIDATED GPS UPDATE ERROR: $e');
     }
   }
 

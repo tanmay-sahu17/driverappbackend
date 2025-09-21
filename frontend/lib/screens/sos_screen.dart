@@ -37,7 +37,7 @@ class _SosScreenState extends State<SosScreen> {
     }
 
     // Check authentication
-    if (authProvider.user?.uid == null) {
+    if (authProvider.driverProfile?['driverId'] == null) {
       _showSnackbar('User not authenticated. Please login first.', Colors.red);
       return;
     }
@@ -64,14 +64,14 @@ class _SosScreenState extends State<SosScreen> {
     });
 
     print('🚨 Sending SOS Alert:');
-    print('Driver ID: ${authProvider.user?.uid}');
+    print('Driver ID: ${authProvider.driverProfile?['driverId']}');
     print('Bus Number: ${locationProvider.selectedBusNumber}');
     print('Location: ${locationProvider.currentPosition!.latitude}, ${locationProvider.currentPosition!.longitude}');
     print('Message: $message');
 
     try {
       bool success = await ApiService.sendSosAlert(
-        driverId: authProvider.user!.uid,
+        driverId: authProvider.driverProfile!['driverId'],
         busNumber: locationProvider.selectedBusNumber!,
         latitude: locationProvider.currentPosition!.latitude,
         longitude: locationProvider.currentPosition!.longitude,
@@ -226,7 +226,7 @@ class _SosScreenState extends State<SosScreen> {
                             _buildInfoRow('Latitude', locationProvider.currentPosition!.latitude.toStringAsFixed(6)),
                             _buildInfoRow('Longitude', locationProvider.currentPosition!.longitude.toStringAsFixed(6)),
                             _buildInfoRow('Bus Number', locationProvider.selectedBusNumber ?? 'BUS001'),
-                            _buildInfoRow('Driver', authProvider.user?.displayName ?? 'test'),
+                            _buildInfoRow('Driver', authProvider.driverProfile?['name'] ?? 'Driver'),
                           ],
                         ),
                       ),

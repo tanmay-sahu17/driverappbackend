@@ -1,36 +1,103 @@
 const express = require('express');
 const router = express.Router();
 const Driver = require('../models/Driver');
+const Assignment = require('../models/Assignment');
+const DriverAssignment = require('../models/DriverAssignment');
+const Bus = require('../models/Bus');
 const { auth } = require('../config/firebase');
 
-// @route   POST /api/auth/get-email-by-phone
-// @desc    Get email by phone number for login
+// @route   POST /api/auth/login
+// @desc    Login with contact number and password
 // @access  Public
-router.post('/get-email-by-phone', async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
-    const { phoneNumber } = req.body;
+    const { contactNumber, password } = req.body;
 
-    if (!phoneNumber) {
+    if (!contactNumber || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Phone number is required'
+        message: 'Contact number and password are required'
       });
     }
 
-    // Clean phone number (remove spaces, dashes, etc.)
-    const cleanPhone = phoneNumber.replace(/\D/g, '');
-    const normalizedPhone = cleanPhone.length > 10 ? 
-      cleanPhone.substring(cleanPhone.length - 10) : cleanPhone;
+    console.log(`🔐 Login attempt for contact number: ${contactNumber}`);
+
+    // Authenticate driver
+    const driver = await Driver.authenticate(contactNumber, password);
     
-    // Find driver by phone number
-    const driver = await Driver.findByPhone(normalizedPhone);
+    if (!driver) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid contact number or password'
+      });
+    }
+
+    console.log(`✅ Login successful for driver: ${driver.name}`);
+
+    // Check for active assignment
+    const assignment = await Assignment.findActiveByDriverId(driver.driverId);
+    let assignedBus = null;
+    
+    if (assignment) {
+      try {
+        assignedBus = await assignment.getBusDetails();
+        console.log(`✅ Found assigned bus: ${assignedBus?.busNumber || 'Unknown'}`);
+      } catch (error) {
+        console.error('Error fetching assigned bus details:', error);
+      }
+    } else {
+      console.log(`❌ No active assignment found for driver: ${driver.driverId}`);
+    }
+
+    // Return driver data without password
+    const driverData = driver.toJSON();
+    delete driverData.password;
+
+    res.json({
+      success: true,
+      message: 'Login successful',
+      driver: driverData,
+      assignment: assignment ? assignment.toJSON() : null,
+      assignedBus: assignedBus ? assignedBus.toJSON() : null
+    });
+
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during login'
+    });
+  }
+});
+
+// @route   POST /api/auth/get-email-by-phone
+// @desc    Get email by phone number for login (legacy)
+// @access  Public
+router.post('/get-email-by-phone', async (req, res) => {
+  try {
+    const { contactNumber } = req.body;
+
+    if (!contactNumber) {
+      return res.status(400).json({
+        success: false,
+        message: 'Contact number is required'
+      });
+    }
+
+    // Find driver by contact number
+    const driver = await Driver.findByContactNumber(contactNumber);
     
     if (!driver) {
       return res.status(404).json({
         success: false,
-        message: 'No account found with this phone number'
+        message: 'No account found with this contact number'
       });
     }
+
+    // Clean contact number for email generation
+    const cleanPhone = contactNumber.replace(/\D/g, '');
+    const normalizedPhone = cleanPhone.length > 10 ? 
+      cleanPhone.substring(cleanPhone.length - 10) : cleanPhone;
 
     // Generate the same email pattern that was used during registration
     const generatedEmail = `driver_${normalizedPhone}@busdriver.app`;
@@ -38,11 +105,11 @@ router.post('/get-email-by-phone', async (req, res) => {
     res.json({
       success: true,
       email: generatedEmail,
-      message: 'Account found for phone number'
+      message: 'Account found for contact number'
     });
 
   } catch (error) {
-    console.error('Error getting email by phone:', error);
+    console.error('Error getting email by contact number:', error);
     res.status(500).json({
       success: false,
       message: 'Server error'

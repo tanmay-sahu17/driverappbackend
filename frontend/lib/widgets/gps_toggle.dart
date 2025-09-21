@@ -34,13 +34,20 @@ class _GpsToggleState extends State<GpsToggle> {
     } else {
       // Check if bus is selected before starting tracking
       if (locationProvider.selectedBusNumber == null) {
-        _showBusSelectionDialog();
-        return;
+        // Try to auto-select from assignment if available
+        if (authProvider.hasActiveAssignment && authProvider.assignedBus != null) {
+          final busNumber = authProvider.assignedBus!['busNumber'];
+          locationProvider.setBusNumber(busNumber);
+          print('🚌 Auto-selected bus from assignment: $busNumber');
+        } else {
+          _showBusSelectionDialog();
+          return;
+        }
       }
 
       // Start tracking
       bool success = await locationProvider.startTracking(
-        driverId: authProvider.user?.uid,
+        driverId: authProvider.driverProfile?['driverId'],
       );
       
       if (success) {

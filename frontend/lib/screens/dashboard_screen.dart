@@ -185,7 +185,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       ),
                                     ),
                                     Text(
-                                      authProvider.user?.displayName ?? l10n.driver,
+                                      authProvider.driverProfile?['name'] ?? l10n.driver,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,

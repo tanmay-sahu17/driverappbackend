@@ -6,6 +6,7 @@ class LocationTracking {
     this.id = data.id || uuidv4();
     this.driverId = data.driverId;
     this.busNumber = data.busNumber;
+    this.assignmentId = data.assignmentId; // New field for assignment ID
     
     // Location data
     this.latitude = data.latitude;
@@ -38,6 +39,7 @@ class LocationTracking {
           accuracy: this.accuracy,
           speed: this.speed,
           timestamp: this.timestamp,
+          assignmentId: this.assignmentId, // Add assignment ID to updates
           lastUpdate: new Date()
         });
         console.log(`📍 Location updated (existing doc) for driver ${this.driverId} at ${this.latitude}, ${this.longitude}`);
@@ -100,6 +102,7 @@ class LocationTracking {
     return {
       driverId: this.driverId,
       busNumber: this.busNumber,
+      assignmentId: this.assignmentId, // Include assignment ID in JSON
       latitude: this.latitude,
       longitude: this.longitude,
       accuracy: this.accuracy,

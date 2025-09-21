@@ -39,7 +39,7 @@ class _SignupScreenState extends State<SignupScreen> {
     await authProvider.signUp(
       password: _passwordController.text,
       driverName: _nameController.text.trim(),
-      phoneNumber: _phoneController.text.trim(),
+      contactNumber: _phoneController.text.trim(),
       licenseNumber: _licenseController.text.trim(),
     );
 

@@ -7,6 +7,7 @@ const busRoutes = require('./bus');
 const locationRoutes = require('./location');
 const sosRoutes = require('./sos');
 const etaRoutes = require('./eta');
+const assignmentRoutes = require('./assignment');
 
 // Health check endpoint
 router.get('/health', (req, res) => {
@@ -23,5 +24,6 @@ router.use('/bus', busRoutes);
 router.use('/location', locationRoutes);
 router.use('/sos', sosRoutes);
 router.use('/eta', etaRoutes);
+router.use('/assignment', assignmentRoutes);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const LocationTracking = require('../models/LocationTracking');
+const Assignment = require('../models/Assignment');
 
 // @route   POST /api/location/update
 // @desc    Update driver location
@@ -17,10 +18,40 @@ router.post('/update', async (req, res) => {
       });
     }
 
+    console.log(`🚗 Location update request from driver: ${driverId}`);
+
+    // Check driver assignment and time validation
+    const assignment = await Assignment.findActiveByDriverId(driverId);
+    if (!assignment) {
+      console.log(`❌ No active assignment found for driver: ${driverId}`);
+      return res.status(403).json({
+        success: false,
+        message: 'No active assignment found. Please contact administrator.',
+        code: 'NO_ASSIGNMENT'
+      });
+    }
+
+    // Validate tracking time window
+    const timeValidation = assignment.isTrackingAllowed();
+    if (!timeValidation.allowed) {
+      console.log(`❌ Tracking not allowed for driver ${driverId}: ${timeValidation.reason}`);
+      return res.status(403).json({
+        success: false,
+        message: timeValidation.reason,
+        code: 'TRACKING_NOT_ALLOWED',
+        trackingWindow: assignment.getTrackingWindow(),
+        timeUntilStart: timeValidation.timeUntilStart,
+        timeAfterEnd: timeValidation.timeAfterEnd
+      });
+    }
+
+    console.log(`✅ Time validation passed for driver: ${driverId}`);
+
     // Create location tracking entry
     const locationUpdate = new LocationTracking({
       driverId,
       busNumber,
+      assignmentId: assignment.id, // Add assignment ID from the found assignment
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
       accuracy: parseFloat(accuracy) || 0,
@@ -203,6 +234,55 @@ router.get('/nearby', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to find nearby drivers'
+    });
+  }
+});
+
+// @route   GET /api/location/tracking-status/:driverId
+// @desc    Check if driver can start tracking (time validation)
+// @access  Private
+router.get('/tracking-status/:driverId', async (req, res) => {
+  try {
+    const { driverId } = req.params;
+
+    console.log(`🕐 Checking tracking status for driver: ${driverId}`);
+
+    // Get driver assignment
+    const assignment = await Assignment.findActiveByDriverId(driverId);
+    if (!assignment) {
+      return res.status(404).json({
+        success: false,
+        message: 'No active assignment found',
+        code: 'NO_ASSIGNMENT'
+      });
+    }
+
+    // Check time validation
+    const timeValidation = assignment.isTrackingAllowed();
+    const trackingWindow = assignment.getTrackingWindow();
+
+    res.json({
+      success: true,
+      data: {
+        canStartTracking: timeValidation.allowed,
+        reason: timeValidation.reason,
+        trackingWindow: trackingWindow,
+        assignment: {
+          assignmentId: assignment.assignmentId,
+          startTime: assignment.startTime,
+          busId: assignment.busId
+        },
+        timeUntilStart: timeValidation.timeUntilStart,
+        timeAfterEnd: timeValidation.timeAfterEnd,
+        currentTime: new Date().toLocaleTimeString('en-IN', { hour12: false })
+      }
+    });
+
+  } catch (error) {
+    console.error('Tracking status error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check tracking status'
     });
   }
 });

@@ -7,7 +7,7 @@ class ApiService {
   // static const String baseUrl = 'http://10.27.245.57:3000/api';
   // For emulator testing (10.0.2.2 maps to host machine's localhost): 
   // static const String baseUrl = 'http://10.0.2.2:3000/api';
-  static const String baseUrl = 'http://10.31.15.1:3000/api';
+  static const String baseUrl = 'http://10.31.15.129:3000/api';
   
   // Headers for all API requests
   static const Map<String, String> headers = {
@@ -16,7 +16,8 @@ class ApiService {
   };
 
   /// Update driver's location to the backend
-  static Future<bool> updateLocation({
+  static Future<bool> updateLocation
+  ({
     required String driverId,
     required String busNumber,
     required double latitude,
@@ -101,7 +102,7 @@ class ApiService {
   static Future<bool> registerDriver({
     required String password,
     required String driverName,
-    required String phoneNumber,
+    required String contactNumber,
     required String licenseNumber,
   }) async {
     try {
@@ -111,7 +112,7 @@ class ApiService {
         body: jsonEncode({
           'password': password,
           'driverName': driverName,
-          'phoneNumber': phoneNumber,
+          'contactNumber': contactNumber,
           'licenseNumber': licenseNumber,
         }),
       );
@@ -165,6 +166,85 @@ class ApiService {
     }
   }
 
+  /// Direct login with contact number and password
+  static Future<Map<String, dynamic>?> loginWithContactNumber({
+    required String contactNumber,
+    required String password,
+  }) async {
+    try {
+      print('Attempting login with contact number: $contactNumber');
+      
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/login'),
+        headers: headers,
+        body: jsonEncode({
+          'contactNumber': contactNumber,
+          'password': password,
+        }),
+      );
+
+      print('Login response: ${response.statusCode}');
+      print('Login body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data;
+      } else {
+        print('Login failed with status: ${response.statusCode}');
+        final errorData = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': errorData['message'] ?? 'Login failed'
+        };
+      }
+    } catch (e) {
+      print('Error logging in: $e');
+      return {
+        'success': false,
+        'message': 'Network error: ${e.toString()}'
+      };
+    }
+  }
+
+  /// Get driver assignment by driver ID
+  static Future<Map<String, dynamic>?> getDriverAssignment(String driverId) async {
+    try {
+      print('Fetching assignment for driver: $driverId');
+      
+      final response = await http.get(
+        Uri.parse('$baseUrl/assignment/driver/$driverId'),
+        headers: headers,
+      );
+
+      print('Assignment response: ${response.statusCode}');
+      print('Assignment body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data;
+      } else if (response.statusCode == 404) {
+        // No assignment found - this is normal
+        return {
+          'success': false,
+          'message': 'No assignment found'
+        };
+      } else {
+        print('Assignment fetch failed with status: ${response.statusCode}');
+        final errorData = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': errorData['message'] ?? 'Failed to fetch assignment'
+        };
+      }
+    } catch (e) {
+      print('Error fetching assignment: $e');
+      return {
+        'success': false,
+        'message': 'Network error: ${e.toString()}'
+      };
+    }
+  }
+
   /// Test API connection
   static Future<bool> testConnection() async {
     try {
@@ -186,15 +266,15 @@ class ApiService {
   }
 
   /// Get email by phone number for login
-  static Future<String?> getEmailByPhone(String phoneNumber) async {
+  static Future<String?> getEmailByPhone(String contactNumber) async {
     try {
-      print('Getting email for phone: $phoneNumber');
+      print('Getting email for phone: $contactNumber');
       
       final response = await http.post(
         Uri.parse('$baseUrl/auth/get-email-by-phone'),
         headers: headers,
         body: jsonEncode({
-          'phoneNumber': phoneNumber,
+          'contactNumber': contactNumber,
         }),
       );
 
@@ -251,11 +331,11 @@ class ApiService {
   static Future<Map<String, dynamic>?> signUp({
     required String password,
     required String driverName,
-    required String phoneNumber,
+    required String contactNumber,
     required String licenseNumber,
   }) async {
     try {
-      print('Attempting sign up for phone: $phoneNumber');
+      print('Attempting sign up for phone: $contactNumber');
       
       final response = await http.post(
         Uri.parse('$baseUrl/auth/register'),
@@ -263,7 +343,7 @@ class ApiService {
         body: jsonEncode({
           'password': password,
           'driverName': driverName,
-          'phoneNumber': phoneNumber,
+          'contactNumber': contactNumber,
           'licenseNumber': licenseNumber,
         }),
       );
@@ -281,6 +361,92 @@ class ApiService {
     } catch (e) {
       print('Error signing up: $e');
       return null;
+    }
+  }
+
+  /// Check tracking status for driver (time validation)
+  static Future<Map<String, dynamic>?> getTrackingStatus(String driverId) async {
+    try {
+      print('Checking tracking status for driver: $driverId');
+      
+      final response = await http.get(
+        Uri.parse('$baseUrl/location/tracking-status/$driverId'),
+        headers: headers,
+      );
+
+      print('Tracking status response: ${response.statusCode}');
+      print('Tracking status body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data;
+      } else {
+        print('Tracking status check failed with status: ${response.statusCode}');
+        final errorData = jsonDecode(response.body);
+        return {
+          'success': false,
+          'message': errorData['message'] ?? 'Failed to check tracking status'
+        };
+      }
+    } catch (e) {
+      print('Error checking tracking status: $e');
+      return {
+        'success': false,
+        'message': 'Network error: ${e.toString()}'
+      };
+    }
+  }
+
+  /// Update location with time validation
+  static Future<Map<String, dynamic>> updateLocationWithValidation({
+    required String driverId,
+    required String busNumber,
+    required double latitude,
+    required double longitude,
+  }) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/location/update'),
+        headers: headers,
+        body: jsonEncode({
+          'driverId': driverId,
+          'busNumber': busNumber,
+          'latitude': latitude,
+          'longitude': longitude,
+          'accuracy': 10.0,
+          'speed': 0.0,
+          'timestamp': DateTime.now().toIso8601String(),
+        }),
+      );
+
+      print('Location update response: ${response.statusCode}');
+      print('Location update body: ${response.body}');
+
+      final data = jsonDecode(response.body);
+      
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          'message': 'Location updated successfully',
+          'data': data['data']
+        };
+      } else {
+        // Handle time validation errors
+        return {
+          'success': false,
+          'message': data['message'] ?? 'Location update failed',
+          'code': data['code'],
+          'trackingWindow': data['trackingWindow'],
+          'timeUntilStart': data['timeUntilStart'],
+          'timeAfterEnd': data['timeAfterEnd']
+        };
+      }
+    } catch (e) {
+      print('Error updating location: $e');
+      return {
+        'success': false,
+        'message': 'Network error: ${e.toString()}'
+      };
     }
   }
 }

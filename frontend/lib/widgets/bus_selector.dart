@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/location_provider.dart';
+import '../providers/auth_provider.dart';
 import '../models/bus_model.dart';
 import '../services/api_service.dart';
 
@@ -39,34 +40,41 @@ class _BusSelectorState extends State<BusSelector> {
         errorMessage = null;
       });
 
-      print('🚌 Loading buses from API...');
-      final buses = await ApiService.getBusList();
+      // Get assigned bus from AuthProvider
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       
-      print('📋 Received ${buses.length} buses from API');
-      buses.forEach((bus) {
-        print('🚌 Bus: ${bus['busNumber']} - ${bus['model'] ?? 'Unknown Model'}');
-      });
-
-      setState(() {
-        allBuses = buses;
-        filteredBuses = buses;
-        isLoading = false;
-      });
+      if (authProvider.hasActiveAssignment && authProvider.assignedBus != null) {
+        print('🚌 Loading assigned bus from AuthProvider...');
+        final assignedBus = authProvider.assignedBus!;
+        
+        print('✅ Found assigned bus: ${assignedBus['busNumber']}');
+        
+        // Create bus list with only the assigned bus
+        final busList = [assignedBus];
+        
+        setState(() {
+          allBuses = busList;
+          filteredBuses = busList;
+          // No auto-selection - user must manually select bus
+          isLoading = false;
+        });
+        
+      } else {
+        print('❌ No assigned bus found for driver');
+        setState(() {
+          allBuses = [];
+          filteredBuses = [];
+          isLoading = false;
+          errorMessage = 'No bus assigned to you. Please contact administrator.';
+        });
+      }
     } catch (e) {
-      print('❌ Error loading buses: $e');
+      print('❌ Error loading assigned bus: $e');
       setState(() {
-        errorMessage = 'Failed to load buses: $e';
+        errorMessage = 'Failed to load assigned bus: $e';
         isLoading = false;
-        // Fallback to mock data if API fails
-        final mockBusNumbers = MockBusData.getAllBusNumbers();
-        allBuses = mockBusNumbers.map((busNumber) => {
-          'id': busNumber.toLowerCase(),
-          'busNumber': busNumber,
-          'model': 'Mock Bus',
-          'capacity': 40,
-          'busType': 'AC'
-        }).toList();
-        filteredBuses = allBuses;
+        allBuses = [];
+        filteredBuses = [];
       });
     }
   }
@@ -87,7 +95,7 @@ class _BusSelectorState extends State<BusSelector> {
   void _selectBus(String busNumber) {
     setState(() {
       selectedBusNumber = busNumber;
-      _searchController.text = busNumber;
+      // Don't set controller text since we're using read-only field
     });
     
     // Update the location provider with selected bus
@@ -174,12 +182,14 @@ class _BusSelectorState extends State<BusSelector> {
                   labelStyle: TextStyle(
                     color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                   ),
-                  hintText: 'BUS001, BUS002...',
+                  hintText: selectedBusNumber == null ? 'Tap to select bus...' : selectedBusNumber,
                   hintStyle: TextStyle(
-                    color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
+                    color: selectedBusNumber == null 
+                        ? (isDarkMode ? Colors.grey[500] : Colors.grey[500])
+                        : (isDarkMode ? Colors.white : Colors.black),
                   ),
                   prefixIcon: Icon(
-                    Icons.search,
+                    Icons.directions_bus,
                     color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                   ),
                   suffixIcon: selectedBusNumber != null
@@ -191,6 +201,7 @@ class _BusSelectorState extends State<BusSelector> {
                           onPressed: () {
                             setState(() {
                               selectedBusNumber = null;
+                              // Clear controller as well
                               _searchController.clear();
                             });
                             Provider.of<LocationProvider>(context, listen: false)
@@ -219,7 +230,7 @@ class _BusSelectorState extends State<BusSelector> {
                   filled: true,
                   fillColor: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
                 ),
-                readOnly: false,
+                readOnly: true, // Make it read-only so only dropdown works
                 onTap: () {
                   _showBusSelectionModal();
                 },
@@ -254,7 +265,7 @@ class _BusSelectorState extends State<BusSelector> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Assigned: $selectedBusNumber',
+                            'Selected: $selectedBusNumber',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               color: isDarkMode ? const Color(0xFF4CAF50) : Colors.green[700],

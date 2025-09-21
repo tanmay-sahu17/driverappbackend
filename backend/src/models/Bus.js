@@ -18,21 +18,32 @@ const VEHICLE_NUMBER_PATTERNS = {
 class Bus {
   constructor(data) {
     this.id = data.id || uuidv4();
-    this.busNumber = data.busNumber; // Format: PB03BC1234
+    
+    // Match exact database structure from screenshots
+    this.busId = data.busId; // "BUS001", "BUS002" etc
+    this.busName = data.busName; // "City bus", "City Express" etc
+    this.licensePlate = data.licensePlate; // "CG04HC1212", "CG-12-AB-3456" etc
+    this.rcNumber = data.rcNumber; // "1212121212", "RC123456" etc
+    this.capacity = data.capacity; // 45
+    this.busType = data.busType; // "ac", "City Bus" etc
+    this.busModel = data.busModel; // "TATA ULTRA M5", "Tata Starbus" etc
+    this.routeId = data.routeId;
+    this.driverId = data.driverId || []; // Array of driver IDs
+    this.status = data.status || 'inactive'; // "active", "inactive"
+    
+    // For backward compatibility with other structures
+    this.busNumber = data.busNumber || data.busId || data.vehicleNumber || null;
     this.operatorId = data.operatorId;
-    this.routeId = data.routeId || null;
-    this.driverId = data.driverId || null; // Driver selects from driver app
-    this.busType = data.busType; // 'AC', 'Non-AC', 'Sleeper', 'Semi-Sleeper'
-    this.capacity = data.capacity;
-    this.amenities = data.amenities || []; // ['WiFi', 'Charging', 'GPS', 'CCTV']
-    this.registrationNumber = data.registrationNumber; // Same as busNumber but formatted
-    this.model = data.model || data.busModel || null; // Support both field names
-    this.year = data.year || data.manufacturingYear || null; // Support both field names
-    this.isActive = data.isActive !== undefined ? data.isActive : true;
+    this.amenities = data.amenities || [];
+    this.registrationNumber = data.registrationNumber || data.licensePlate;
+    this.model = data.model || data.busModel || null;
+    this.year = data.year || data.manufacturingYear || null;
+    this.isActive = data.isActive !== undefined ? data.isActive : (data.status === 'active');
     this.isOnline = data.isOnline !== undefined ? data.isOnline : false;
-    this.currentStatus = data.currentStatus || 'parked'; // 'running', 'parked', 'maintenance', 'breakdown'
-    this.lastUpdated = data.lastUpdated || new Date().toISOString();
+    this.currentStatus = data.currentStatus || data.status || 'parked';
+    
     this.createdAt = data.createdAt || new Date().toISOString();
+    this.updatedAt = data.updatedAt || new Date().toISOString();
     this.updatedAt = new Date().toISOString();
   }
 
@@ -72,13 +83,22 @@ class Bus {
     }
   }
 
-  // Find bus by number
+  // Find bus by number (search both busNumber and busId fields)
   static async findByNumber(busNumber) {
     try {
-      const snapshot = await db.collection('buses')
+      // First try to find by busNumber field
+      let snapshot = await db.collection('buses')
         .where('busNumber', '==', busNumber)
         .limit(1)
         .get();
+      
+      // If not found, try to find by busId field
+      if (snapshot.empty) {
+        snapshot = await db.collection('buses')
+          .where('busId', '==', busNumber)
+          .limit(1)
+          .get();
+      }
       
       if (snapshot.empty) return null;
       
@@ -307,25 +327,33 @@ class Bus {
     }
   }
 
-  // Convert to JSON
+  // Convert to JSON - match database structure
   toJSON() {
     return {
-      busNumber: this.busNumber,
-      operatorId: this.operatorId,
+      id: this.id,
+      busId: this.busId,
+      busName: this.busName,
+      licensePlate: this.licensePlate,
+      rcNumber: this.rcNumber,
+      capacity: this.capacity,
+      busType: this.busType,
+      busModel: this.busModel,
       routeId: this.routeId,
       driverId: this.driverId,
-      busType: this.busType,
-      capacity: this.capacity,
+      status: this.status,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      
+      // Additional fields for compatibility
+      busNumber: this.busNumber,
+      operatorId: this.operatorId,
       amenities: this.amenities,
       registrationNumber: this.registrationNumber,
       model: this.model,
       year: this.year,
       isActive: this.isActive,
       isOnline: this.isOnline,
-      currentStatus: this.currentStatus,
-      lastUpdated: this.lastUpdated,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      currentStatus: this.currentStatus
     };
   }
 }

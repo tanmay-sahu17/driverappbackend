@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/theme_provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/location_provider.dart';
+import '../providers/language_provider.dart';
 import 'login_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -10,17 +12,30 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontSize: 20),
+        title: Text(
+          l10n.settings,
+          style: const TextStyle(fontSize: 20),
         ),
         centerTitle: true,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          // Language Section
+          _buildSectionHeader(
+            context, 
+            l10n.language, 
+            Icons.language,
+          ),
+          const SizedBox(height: 12),
+          _buildLanguageSelector(context),
+          
+          const SizedBox(height: 32),
+          
           // Theme Section
           _buildSectionHeader(
             context, 
@@ -81,6 +96,7 @@ class SettingsScreen extends StatelessWidget {
 
   Widget _buildAccountSection(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
@@ -126,7 +142,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 title: Text(
-                  'Sign Out',
+                  l10n.signOut,
                   style: TextStyle(
                     color: Colors.red[600],
                     fontWeight: FontWeight.w500,
@@ -170,6 +186,165 @@ class SettingsScreen extends StatelessWidget {
         (route) => false,
       );
     }
+  }
+
+  Widget _buildLanguageSelector(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    
+    return Consumer<LanguageProvider>(
+      builder: (context, languageProvider, child) {
+        return Card(
+          elevation: isDarkMode ? 4 : 2,
+          color: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: isDarkMode 
+                  ? const Color(0xFF6CB5A8).withValues(alpha: 0.2)
+                  : const Color(0xFF4A9B8E).withValues(alpha: 0.1),
+              radius: 20,
+              child: Icon(
+                Icons.language,
+                color: isDarkMode ? const Color(0xFF6CB5A8) : const Color(0xFF4A9B8E),
+                size: 20,
+              ),
+            ),
+            title: Text(
+              l10n.language,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                color: isDarkMode ? Colors.white : Colors.grey[800],
+              ),
+            ),
+            subtitle: Text(
+              languageProvider.currentLanguageName,
+              style: TextStyle(
+                fontSize: 12,
+                color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
+              ),
+            ),
+            trailing: Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: isDarkMode ? Colors.white54 : Colors.grey[600],
+            ),
+            onTap: () => _showLanguageDialog(context),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    final languageProvider = Provider.of<LanguageProvider>(context, listen: false);
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: isDarkMode ? const Color(0xFF2C2C2C) : Colors.white,
+          title: Text(
+            l10n.selectLanguage,
+            style: TextStyle(
+              color: isDarkMode ? Colors.white : Colors.black,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // English Option
+              ListTile(
+                leading: Radio<String>(
+                  value: 'en',
+                  groupValue: languageProvider.currentLocale.languageCode,
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      languageProvider.changeLanguage(value);
+                      Navigator.of(context).pop();
+                      _showLanguageChangedSnackbar(context, 'English');
+                    }
+                  },
+                  activeColor: const Color(0xFF4A9B8E),
+                ),
+                title: Text(
+                  l10n.english,
+                  style: TextStyle(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  languageProvider.changeLanguage('en');
+                  Navigator.of(context).pop();
+                  _showLanguageChangedSnackbar(context, 'English');
+                },
+              ),
+              // Hindi Option
+              ListTile(
+                leading: Radio<String>(
+                  value: 'hi',
+                  groupValue: languageProvider.currentLocale.languageCode,
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      languageProvider.changeLanguage(value);
+                      Navigator.of(context).pop();
+                      _showLanguageChangedSnackbar(context, 'हिंदी');
+                    }
+                  },
+                  activeColor: const Color(0xFF4A9B8E),
+                ),
+                title: Text(
+                  l10n.hindi,
+                  style: TextStyle(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  languageProvider.changeLanguage('hi');
+                  Navigator.of(context).pop();
+                  _showLanguageChangedSnackbar(context, 'हिंदी');
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                l10n.cancel,
+                style: const TextStyle(color: Color(0xFF4A9B8E)),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showLanguageChangedSnackbar(BuildContext context, String languageName) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.language, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Text('Language changed to $languageName'),
+          ],
+        ),
+        backgroundColor: const Color(0xFF4A9B8E),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   Widget _buildThemeSelector(BuildContext context) {

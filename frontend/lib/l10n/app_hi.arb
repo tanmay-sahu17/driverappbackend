@@ -1,0 +1,134 @@
+{
+  "appTitle": "बस ड्राइवर पोर्टल",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "वापसी पर स्वागत",
+  "@welcome": {
+    "description": "Welcome message on login screen"
+  },
+  "signInToContinue": "अपना रूट जारी रखने के लिए साइन इन करें",
+  "@signInToContinue": {
+    "description": "Subtitle on login screen"
+  },
+  "phoneNumber": "फोन नंबर",
+  "@phoneNumber": {
+    "description": "Phone number field label"
+  },
+  "password": "पासवर्ड",
+  "@password": {
+    "description": "Password field label"
+  },
+  "signIn": "साइन इन",
+  "@signIn": {
+    "description": "Sign in button text"
+  },
+  "signUp": "साइन अप",
+  "@signUp": {
+    "description": "Sign up button text"
+  },
+  "dontHaveAccount": "कोई खाता नहीं है?",
+  "@dontHaveAccount": {
+    "description": "Don't have account text"
+  },
+  "alreadyHaveAccount": "पहले से खाता है?",
+  "@alreadyHaveAccount": {
+    "description": "Already have account text"
+  },
+  "dashboard": "डैशबोर्ड",
+  "@dashboard": {
+    "description": "Dashboard title"
+  },
+  "profile": "प्रोफाइल",
+  "@profile": {
+    "description": "Profile section title"
+  },
+  "settings": "सेटिंग्स",
+  "@settings": {
+    "description": "Settings section title"
+  },
+  "language": "भाषा",
+  "@language": {
+    "description": "Language setting title"
+  },
+  "selectLanguage": "भाषा चुनें",
+  "@selectLanguage": {
+    "description": "Language selection dialog title"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  "hindi": "हिंदी",
+  "@hindi": {
+    "description": "Hindi language option"
+  },
+  "signOut": "साइन आउट",
+  "@signOut": {
+    "description": "Sign out button text"
+  },
+  "busDetails": "बस विवरण",
+  "@busDetails": {
+    "description": "Bus details section title"
+  },
+  "busNumber": "बस नंबर",
+  "@busNumber": {
+    "description": "Bus number field"
+  },
+  "route": "रूट",
+  "@route": {
+    "description": "Route field"
+  },
+  "currentLocation": "वर्तमान स्थान",
+  "@currentLocation": {
+    "description": "Current location title"
+  },
+  "sosAlert": "एसओएस अलर्ट",
+  "@sosAlert": {
+    "description": "SOS alert button"
+  },
+  "emergency": "आपातकाल",
+  "@emergency": {
+    "description": "Emergency title"
+  },
+  "trackYourRoute": "अपना रूट ट्रैक करें",
+  "@trackYourRoute": {
+    "description": "App subtitle"
+  },
+  "pleaseEnterPhoneNumber": "कृपया अपना फोन नंबर दर्ज करें",
+  "@pleaseEnterPhoneNumber": {
+    "description": "Phone number validation message"
+  },
+  "pleaseEnterValidPhoneNumber": "कृपया एक वैध फोन नंबर दर्ज करें",
+  "@pleaseEnterValidPhoneNumber": {
+    "description": "Phone number format validation message"
+  },
+  "pleaseEnterPassword": "कृपया अपना पासवर्ड दर्ज करें",
+  "@pleaseEnterPassword": {
+    "description": "Password validation message"
+  },
+  "passwordTooShort": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
+  "@passwordTooShort": {
+    "description": "Password length validation message"
+  },
+  "signInFailed": "साइन इन विफल",
+  "@signInFailed": {
+    "description": "Sign in error dialog title"
+  },
+  "ok": "ठीक है",
+  "@ok": {
+    "description": "OK button text"
+  },
+  "cancel": "रद्द करें",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "save": "सेव करें",
+  "@save": {
+    "description": "Save button text"
+  },
+  "loading": "लोड हो रहा है...",
+  "@loading": {
+    "description": "Loading text"
+  }
+}

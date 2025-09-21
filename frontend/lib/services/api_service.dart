@@ -7,7 +7,7 @@ class ApiService {
   // static const String baseUrl = 'http://10.27.245.57:3000/api';
   // For emulator testing (10.0.2.2 maps to host machine's localhost): 
   // static const String baseUrl = 'http://10.0.2.2:3000/api';
-  static const String baseUrl = 'http://10.238.9.57:3000/api';
+  static const String baseUrl = 'http://10.31.15.1:3000/api';
   
   // Headers for all API requests
   static const Map<String, String> headers = {
@@ -99,7 +99,6 @@ class ApiService {
 
   /// Register driver with the backend
   static Future<bool> registerDriver({
-    required String email,
     required String password,
     required String driverName,
     required String phoneNumber,
@@ -110,7 +109,6 @@ class ApiService {
         Uri.parse('$baseUrl/auth/register'),
         headers: headers,
         body: jsonEncode({
-          'email': email,
           'password': password,
           'driverName': driverName,
           'phoneNumber': phoneNumber,
@@ -118,7 +116,7 @@ class ApiService {
         }),
       );
 
-      return response.statusCode == 200;
+      return response.statusCode == 200 || response.statusCode == 201;
     } catch (e) {
       print('Error registering driver: $e');
       return false;
@@ -251,20 +249,18 @@ class ApiService {
 
   /// Register new driver account
   static Future<Map<String, dynamic>?> signUp({
-    required String email,
     required String password,
     required String driverName,
     required String phoneNumber,
     required String licenseNumber,
   }) async {
     try {
-      print('Attempting sign up for: $email');
+      print('Attempting sign up for phone: $phoneNumber');
       
       final response = await http.post(
         Uri.parse('$baseUrl/auth/register'),
         headers: headers,
         body: jsonEncode({
-          'email': email,
           'password': password,
           'driverName': driverName,
           'phoneNumber': phoneNumber,

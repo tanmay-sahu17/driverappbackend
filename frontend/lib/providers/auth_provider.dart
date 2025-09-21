@@ -209,9 +209,8 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  /// Sign up with email and password
+  /// Sign up with phone number and password (email is auto-generated)
   Future<void> signUp({
-    required String email,
     required String password,
     required String driverName,
     required String phoneNumber,
@@ -221,9 +220,8 @@ class AuthProvider with ChangeNotifier {
     _setLoading(true);
 
     try {
-      // First register with backend
+      // First register with backend (backend will generate email internally)
       final backendResult = await ApiService.signUp(
-        email: email,
         password: password,
         driverName: driverName,
         phoneNumber: phoneNumber,
@@ -231,16 +229,23 @@ class AuthProvider with ChangeNotifier {
       );
 
       if (backendResult != null && backendResult['success'] == true) {
-        // Registration successful - now try to sign in
-        print('✅ Registration successful, attempting signin...');
+        // Registration successful
+        print('✅ Registration successful for phone: $phoneNumber');
+        
+        // Clean phone number to generate the same email pattern as backend
+        String cleanPhone = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+        if (cleanPhone.length > 10) {
+          cleanPhone = cleanPhone.substring(cleanPhone.length - 10);
+        }
+        final generatedEmail = 'driver_${cleanPhone}@busdriver.app';
         
         // Give Firebase a moment to process the new user
         await Future.delayed(Duration(seconds: 1));
         
-        // Try to sign in with the newly created account
+        // Try to sign in with the generated email
         try {
           final result = await _authService.signInWithEmailAndPassword(
-            email: email,
+            email: generatedEmail,
             password: password,
           );
 
@@ -252,12 +257,12 @@ class AuthProvider with ChangeNotifier {
             // Registration was successful but auto-signin failed
             // This is not necessarily an error - user can manually sign in
             print('⚠️ Registration successful but auto-signin failed: ${result.message}');
-            _setSignUpError('Account created successfully! Please sign in with your credentials.');
+            _setSignUpError('Account created successfully! Please sign in with your phone number and password.');
           }
         } catch (signinError) {
           // Registration successful but signin failed
           print('⚠️ Registration successful but auto-signin failed: $signinError');
-          _setSignUpError('Account created successfully! Please sign in with your credentials.');
+          _setSignUpError('Account created successfully! Please sign in with your phone number and password.');
         }
       } else {
         _setSignUpError(backendResult?['message'] ?? 'Registration failed');

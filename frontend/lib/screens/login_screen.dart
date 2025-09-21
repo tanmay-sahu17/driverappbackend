@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import 'dashboard_screen.dart';
 import 'signup_screen.dart';
@@ -52,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
@@ -61,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Sign In Failed'),
+                title: Text(l10n.signInFailed),
                 content: Text(authProvider.signInError!),
                 actions: [
                   TextButton(
@@ -69,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.of(context).pop();
                       authProvider.clearSignInError();
                     },
-                    child: const Text('OK'),
+                    child: Text(l10n.ok),
                   ),
                 ],
               ),
@@ -166,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 24),
                       Text(
-                        'Bus Driver Portal',
+                        l10n.appTitle,
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
@@ -176,7 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Track Your Route',
+                        l10n.trackYourRoute,
                         style: TextStyle(
                           fontSize: 16,
                           color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
@@ -212,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            'Welcome Back',
+                            l10n.welcome,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 24,
@@ -222,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Sign in to continue your route',
+                            l10n.signInToContinue,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14,
@@ -253,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: isDarkMode ? Colors.white : Colors.black,
                               ),
                               decoration: InputDecoration(
-                                labelText: 'Phone Number',
+                                labelText: l10n.phoneNumber,
                                 labelStyle: TextStyle(
                                   color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                                 ),
@@ -292,7 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter your phone number';
+                                  return l10n.pleaseEnterPhoneNumber;
                                 }
                                 
                                 // Remove any spaces, dashes, plus signs, or other characters
@@ -300,7 +302,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 
                                 // Check if it's at least 10 digits (to handle +91 numbers too)
                                 if (cleanValue.length < 10) {
-                                  return 'Please enter a valid phone number';
+                                  return l10n.pleaseEnterValidPhoneNumber;
                                 }
                                 
                                 // If it has more than 10 digits, take last 10 (for +91 numbers)
@@ -337,7 +339,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: isDarkMode ? Colors.white : Colors.black,
                               ),
                               decoration: InputDecoration(
-                                labelText: 'Password',
+                                labelText: l10n.password,
                                 labelStyle: TextStyle(
                                   color: isDarkMode ? Colors.grey[400] : Colors.grey[600],
                                 ),
@@ -382,10 +384,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter your password';
+                                  return l10n.pleaseEnterPassword;
                                 }
                                 if (value.length < 6) {
-                                  return 'Password must be at least 6 characters';
+                                  return l10n.passwordTooShort;
                                 }
                                 return null;
                               },
@@ -432,9 +434,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                           ),
                                         )
-                                      : const Text(
-                                          'Sign In',
-                                          style: TextStyle(
+                                      : Text(
+                                          l10n.signIn,
+                                          style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
                                             letterSpacing: 1.0,

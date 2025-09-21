@@ -19,21 +19,26 @@ router.post('/get-email-by-phone', async (req, res) => {
 
     // Clean phone number (remove spaces, dashes, etc.)
     const cleanPhone = phoneNumber.replace(/\D/g, '');
+    const normalizedPhone = cleanPhone.length > 10 ? 
+      cleanPhone.substring(cleanPhone.length - 10) : cleanPhone;
     
     // Find driver by phone number
-    const driver = await Driver.findByPhone(cleanPhone);
+    const driver = await Driver.findByPhone(normalizedPhone);
     
-    if (!driver || !driver.email) {
+    if (!driver) {
       return res.status(404).json({
         success: false,
         message: 'No account found with this phone number'
       });
     }
 
+    // Generate the same email pattern that was used during registration
+    const generatedEmail = `driver_${normalizedPhone}@busdriver.app`;
+
     res.json({
       success: true,
-      email: driver.email,
-      message: 'Email found for phone number'
+      email: generatedEmail,
+      message: 'Account found for phone number'
     });
 
   } catch (error) {
@@ -50,30 +55,47 @@ router.post('/get-email-by-phone', async (req, res) => {
 // @access  Public
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, driverName, phoneNumber, licenseNumber, operatorId } = req.body;
+    const { password, driverName, phoneNumber, licenseNumber, operatorId } = req.body;
 
-    // Validate required fields
-    if (!email || !password || !driverName || !phoneNumber || !licenseNumber) {
+    // Validate required fields (removed email from validation)
+    if (!password || !driverName || !phoneNumber || !licenseNumber) {
       return res.status(400).json({
         success: false,
-        message: 'All fields are required'
+        message: 'Driver name, phone number, license number and password are required'
       });
     }
 
-    // Create Firebase user
+    // Clean phone number
+    const cleanPhone = phoneNumber.replace(/\D/g, '');
+    const normalizedPhone = cleanPhone.length > 10 ? 
+      cleanPhone.substring(cleanPhone.length - 10) : cleanPhone;
+
+    // Check if driver already exists with this phone number
+    const existingDriver = await Driver.findByPhone(normalizedPhone);
+    if (existingDriver) {
+      return res.status(400).json({
+        success: false,
+        message: 'Driver already registered with this phone number'
+      });
+    }
+
+    // Generate a unique email for Firebase Auth (drivers don't need real email)
+    const generatedEmail = `driver_${normalizedPhone}@busdriver.app`;
+
+    // Create Firebase user with generated email
     const userRecord = await auth.createUser({
-      email,
+      email: generatedEmail,
       password,
       displayName: driverName,
       phoneNumber: phoneNumber.startsWith('+') ? phoneNumber : `+91${phoneNumber}`
     });
 
-    // Create driver profile
+    // Create driver profile (store generated email internally)
     const driver = new Driver({
       id: userRecord.uid,
       driverName,
-      email,
-      phoneNumber,
+      email: generatedEmail, // Store generated email
+      phoneNumber: normalizedPhone, // Store normalized phone
       licenseNumber,
       licenseType: 'commercial',
       operatorId: operatorId || null,
@@ -87,9 +109,9 @@ router.post('/register', async (req, res) => {
       message: 'Driver registered successfully',
       data: {
         uid: userRecord.uid,
-        email: userRecord.email,
         displayName: userRecord.displayName,
-        phoneNumber: userRecord.phoneNumber
+        phoneNumber: normalizedPhone,
+        message: 'You can now login with your phone number and password'
       }
     });
 

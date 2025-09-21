@@ -1,0 +1,134 @@
+{
+  "appTitle": "Bus Driver Portal",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "Welcome Back",
+  "@welcome": {
+    "description": "Welcome message on login screen"
+  },
+  "signInToContinue": "Sign in to continue your route",
+  "@signInToContinue": {
+    "description": "Subtitle on login screen"
+  },
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Phone number field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign in button text"
+  },
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "Sign up button text"
+  },
+  "dontHaveAccount": "Don't have an account?",
+  "@dontHaveAccount": {
+    "description": "Don't have account text"
+  },
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": {
+    "description": "Already have account text"
+  },
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Dashboard title"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile section title"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings section title"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting title"
+  },
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Language selection dialog title"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language option"
+  },
+  "hindi": "हिंदी",
+  "@hindi": {
+    "description": "Hindi language option"
+  },
+  "signOut": "Sign Out",
+  "@signOut": {
+    "description": "Sign out button text"
+  },
+  "busDetails": "Bus Details",
+  "@busDetails": {
+    "description": "Bus details section title"
+  },
+  "busNumber": "Bus Number",
+  "@busNumber": {
+    "description": "Bus number field"
+  },
+  "route": "Route",
+  "@route": {
+    "description": "Route field"
+  },
+  "currentLocation": "Current Location",
+  "@currentLocation": {
+    "description": "Current location title"
+  },
+  "sosAlert": "SOS Alert",
+  "@sosAlert": {
+    "description": "SOS alert button"
+  },
+  "emergency": "Emergency",
+  "@emergency": {
+    "description": "Emergency title"
+  },
+  "trackYourRoute": "Track Your Route",
+  "@trackYourRoute": {
+    "description": "App subtitle"
+  },
+  "pleaseEnterPhoneNumber": "Please enter your phone number",
+  "@pleaseEnterPhoneNumber": {
+    "description": "Phone number validation message"
+  },
+  "pleaseEnterValidPhoneNumber": "Please enter a valid phone number",
+  "@pleaseEnterValidPhoneNumber": {
+    "description": "Phone number format validation message"
+  },
+  "pleaseEnterPassword": "Please enter your password",
+  "@pleaseEnterPassword": {
+    "description": "Password validation message"
+  },
+  "passwordTooShort": "Password must be at least 6 characters",
+  "@passwordTooShort": {
+    "description": "Password length validation message"
+  },
+  "signInFailed": "Sign In Failed",
+  "@signInFailed": {
+    "description": "Sign in error dialog title"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading text"
+  }
+}

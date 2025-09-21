@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/location_provider.dart';
 import '../providers/auth_provider.dart';
 
@@ -24,11 +25,12 @@ class _GpsToggleState extends State<GpsToggle> {
   void _toggleGpsTracking() async {
     final locationProvider = Provider.of<LocationProvider>(context, listen: false);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final l10n = AppLocalizations.of(context)!;
     
     if (locationProvider.isTracking) {
       // Stop tracking
       locationProvider.stopTracking();
-      _showSnackbar('GPS tracking stopped', isError: false);
+      _showSnackbar(l10n.gpsTrackingStopped, isError: false);
     } else {
       // Check if bus is selected before starting tracking
       if (locationProvider.selectedBusNumber == null) {
@@ -42,10 +44,10 @@ class _GpsToggleState extends State<GpsToggle> {
       );
       
       if (success) {
-        _showSnackbar('GPS tracking started', isError: false);
+        _showSnackbar(l10n.gpsTrackingStarted, isError: false);
       } else {
         _showSnackbar(
-          locationProvider.errorMessage ?? 'Failed to start GPS tracking',
+          locationProvider.errorMessage ?? l10n.failedToStartGpsTracking,
           isError: true,
         );
       }
@@ -78,6 +80,7 @@ class _GpsToggleState extends State<GpsToggle> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     
     return Consumer<LocationProvider>(
       builder: (context, locationProvider, child) {
@@ -103,7 +106,7 @@ class _GpsToggleState extends State<GpsToggle> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'GPS Tracking',
+                      l10n.gpsTracking,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: Colors.grey[800],
@@ -155,8 +158,8 @@ class _GpsToggleState extends State<GpsToggle> {
                           children: [
                             Text(
                               locationProvider.isTracking 
-                                  ? 'Tracking Active' 
-                                  : 'Tracking Inactive',
+                                  ? l10n.trackingActive 
+                                  : l10n.trackingInactive,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: locationProvider.isTracking 
@@ -167,7 +170,7 @@ class _GpsToggleState extends State<GpsToggle> {
                             if (locationProvider.isTracking) ...[
                               const SizedBox(height: 4),
                               Text(
-                                'Location updates being sent',
+                                l10n.locationUpdatesBeingSent,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.green[600],
@@ -206,7 +209,7 @@ class _GpsToggleState extends State<GpsToggle> {
                                  size: 14),
                             const SizedBox(width: 6),
                             Text(
-                              'Location',
+                              l10n.location,
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: isDarkMode ? Colors.grey[300] : Colors.grey[700],
@@ -228,7 +231,7 @@ class _GpsToggleState extends State<GpsToggle> {
                         Row(
                           children: [
                             Text(
-                              'Acc: ${locationProvider.currentPosition!.accuracy.toStringAsFixed(0)}m',
+                              '${l10n.accuracy}: ${locationProvider.currentPosition!.accuracy.toStringAsFixed(0)}m',
                               style: TextStyle(
                                 fontSize: 10,
                                 color: isDarkMode ? Colors.grey[500] : Colors.grey[500],
@@ -269,8 +272,8 @@ class _GpsToggleState extends State<GpsToggle> {
                           ),
                     label: Text(
                       locationProvider.isTracking 
-                          ? 'Stop Tracking' 
-                          : 'Start Tracking',
+                          ? l10n.stopTracking 
+                          : l10n.startTracking,
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -324,24 +327,25 @@ class _GpsToggleState extends State<GpsToggle> {
   }
 
   void _showBusSelectionDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.directions_bus, color: Colors.blue),
-              SizedBox(width: 8),
-              Text('Select Bus'),
+              const Icon(Icons.directions_bus, color: Colors.blue),
+              const SizedBox(width: 8),
+              Text(l10n.selectBus),
             ],
           ),
-          content: const Text(
-            'Please select your assigned bus before starting GPS tracking.\n\nYou can select a bus from the dashboard or bus selection screen.',
+          content: Text(
+            l10n.selectBusMessage,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Cancel'),
+              child: Text(l10n.cancel),
             ),
             ElevatedButton(
               onPressed: () {

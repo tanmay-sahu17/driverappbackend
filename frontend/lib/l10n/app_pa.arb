@@ -1,77 +1,77 @@
 {
-  "appTitle": "बस ड्राइवर पोर्टल",
+  "appTitle": "ਬੱਸ ਡਰਾਈਵਰ ਪੋਰਟਲ",
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome": "वापसी पर स्वागत",
+  "welcome": "ਜੀ ਆਇਆਂ ਨੂੰ",
   "@welcome": {
     "description": "Welcome message on login screen"
   },
-  "signInToContinue": "अपना रूट जारी रखने के लिए साइन इन करें",
+  "signInToContinue": "ਆਪਣੇ ਰੂਟ ਨੂੰ ਜਾਰੀ ਰੱਖਣ ਲਈ ਸਾਈਨ ਇਨ ਕਰੋ",
   "@signInToContinue": {
     "description": "Subtitle on login screen"
   },
-  "phoneNumber": "फोन नंबर",
+  "phoneNumber": "ਫੋਨ ਨੰਬਰ",
   "@phoneNumber": {
     "description": "Phone number field label"
   },
-  "password": "पासवर्ड",
+  "password": "ਪਾਸਵਰਡ",
   "@password": {
     "description": "Password field label"
   },
-  "confirmPassword": "पासवर्ड की पुष्टि करें",
+  "confirmPassword": "ਪਾਸਵਰਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
   "@confirmPassword": {
     "description": "Confirm password field label"
   },
-  "driverName": "ड्राइवर का नाम",
+  "driverName": "ਡਰਾਈਵਰ ਦਾ ਨਾਮ",
   "@driverName": {
     "description": "Driver name field label"
   },
-  "licenseNumber": "लाइसेंस नंबर",
+  "licenseNumber": "ਲਾਇਸੈਂਸ ਨੰਬਰ",
   "@licenseNumber": {
     "description": "License number field label"
   },
-  "signIn": "साइन इन",
+  "signIn": "ਸਾਈਨ ਇਨ",
   "@signIn": {
     "description": "Sign in button text"
   },
-  "signUp": "साइन अप",
+  "signUp": "ਸਾਈਨ ਅੱਪ",
   "@signUp": {
     "description": "Sign up button text"
   },
-  "register": "रजिस्टर करें",
+  "register": "ਰਜਿਸਟਰ",
   "@register": {
     "description": "Register button text"
   },
-  "createAccount": "खाता बनाएं",
+  "createAccount": "ਖਾਤਾ ਬਣਾਓ",
   "@createAccount": {
     "description": "Create account title"
   },
-  "dontHaveAccount": "कोई खाता नहीं है?",
+  "dontHaveAccount": "ਕੀ ਤੁਹਾਡਾ ਖਾਤਾ ਨਹੀਂ ਹੈ?",
   "@dontHaveAccount": {
     "description": "Don't have account text"
   },
-  "alreadyHaveAccount": "पहले से खाता है?",
+  "alreadyHaveAccount": "ਕੀ ਤੁਹਾਡਾ ਪਹਿਲਾਂ ਤੋਂ ਖਾਤਾ ਹੈ?",
   "@alreadyHaveAccount": {
     "description": "Already have account text"
   },
-  "dashboard": "डैशबोर्ड",
+  "dashboard": "ਡੈਸ਼ਬੋਰਡ",
   "@dashboard": {
     "description": "Dashboard title"
   },
-  "profile": "प्रोफाइल",
+  "profile": "ਪ੍ਰੋਫਾਈਲ",
   "@profile": {
     "description": "Profile section title"
   },
-  "settings": "सेटिंग्स",
+  "settings": "ਸੈਟਿੰਗਾਂ",
   "@settings": {
     "description": "Settings section title"
   },
-  "language": "भाषा",
+  "language": "ਭਾਸ਼ਾ",
   "@language": {
     "description": "Language setting title"
   },
-  "selectLanguage": "भाषा चुनें",
+  "selectLanguage": "ਭਾਸ਼ਾ ਚੁਣੋ",
   "@selectLanguage": {
     "description": "Language selection dialog title"
   },
@@ -87,299 +87,299 @@
   "@punjabi": {
     "description": "Punjabi language option"
   },
-  "signOut": "साइन आउट",
+  "signOut": "ਸਾਈਨ ਆਊਟ",
   "@signOut": {
     "description": "Sign out button text"
   },
-  "logout": "लॉगआउट",
+  "logout": "ਲੌਗਆਊਟ",
   "@logout": {
     "description": "Logout button text"
   },
-  "busDetails": "बस विवरण",
+  "busDetails": "ਬੱਸ ਦੀਆਂ ਵੇਰਵੇ",
   "@busDetails": {
     "description": "Bus details section title"
   },
-  "busNumber": "बस नंबर",
+  "busNumber": "ਬੱਸ ਨੰਬਰ",
   "@busNumber": {
     "description": "Bus number field"
   },
-  "route": "रूट",
+  "route": "ਰੂਟ",
   "@route": {
     "description": "Route field"
   },
-  "currentLocation": "वर्तमान स्थान",
+  "currentLocation": "ਮੌਜੂਦਾ ਸਥਿਤੀ",
   "@currentLocation": {
     "description": "Current location title"
   },
-  "sosAlert": "एसओएस अलर्ट",
+  "sosAlert": "SOS ਅਲਰਟ",
   "@sosAlert": {
     "description": "SOS alert button"
   },
-  "emergency": "आपातकाल",
+  "emergency": "ਐਮਰਜੈਂਸੀ",
   "@emergency": {
     "description": "Emergency title"
   },
-  "trackYourRoute": "अपना रूट ट्रैक करें",
+  "trackYourRoute": "ਆਪਣੇ ਰੂਟ ਨੂੰ ਟਰੈਕ ਕਰੋ",
   "@trackYourRoute": {
     "description": "App subtitle"
   },
-  "driverPortal": "ड्राइवर पोर्टल",
+  "driverPortal": "ਡਰਾਈਵਰ ਪੋਰਟਲ",
   "@driverPortal": {
     "description": "Driver portal text"
   },
-  "startTracking": "ट्रैकिंग शुरू करें",
+  "startTracking": "ਟਰੈਕਿੰਗ ਸ਼ੁਰੂ ਕਰੋ",
   "@startTracking": {
     "description": "Start tracking button"
   },
-  "stopTracking": "ट्रैकिंग बंद करें",
+  "stopTracking": "ਟਰੈਕਿੰਗ ਬੰਦ ਕਰੋ",
   "@stopTracking": {
     "description": "Stop tracking button"
   },
-  "locationTracking": "स्थान ट्रैकिंग",
+  "locationTracking": "ਟਿਕਾਣਾ ਟਰੈਕਿੰਗ",
   "@locationTracking": {
     "description": "Location tracking title"
   },
-  "trackingActive": "ट्रैकिंग सक्रिय",
+  "trackingActive": "ਟਰੈਕਿੰਗ ਸਰਗਰਮ",
   "@trackingActive": {
     "description": "Tracking active status"
   },
-  "trackingInactive": "ट्रैकिंग निष्क्रिय",
+  "trackingInactive": "ਟਰੈਕਿੰਗ ਨਿਸ਼ਕਿਰਿਅ",
   "@trackingInactive": {
     "description": "Tracking inactive status"
   },
-  "emergencyAlert": "आपातकालीन अलर्ट",
+  "emergencyAlert": "ਐਮਰਜੈਂਸੀ ਅਲਰਟ",
   "@emergencyAlert": {
     "description": "Emergency alert title"
   },
-  "sendAlert": "अलर्ट भेजें",
+  "sendAlert": "ਅਲਰਟ ਭੇਜੋ",
   "@sendAlert": {
     "description": "Send alert button"
   },
-  "alertSent": "अलर्ट भेजा गया",
+  "alertSent": "ਅਲਰਟ ਭੇਜਿਆ ਗਿਆ",
   "@alertSent": {
     "description": "Alert sent confirmation"
   },
-  "notifications": "सूचनाएं",
+  "notifications": "ਸੂਚਨਾਵਾਂ",
   "@notifications": {
     "description": "Notifications title"
   },
-  "about": "के बारे में",
+  "about": "ਬਾਰੇ",
   "@about": {
     "description": "About section"
   },
-  "version": "संस्करण",
+  "version": "ਵਰਜ਼ਨ",
   "@version": {
     "description": "Version text"
   },
-  "help": "मदद",
+  "help": "ਮਦਦ",
   "@help": {
     "description": "Help section"
   },
-  "support": "सहायता",
+  "support": "ਸਹਾਇਤਾ",
   "@support": {
     "description": "Support section"
   },
-  "contactUs": "हमसे संपर्क करें",
+  "contactUs": "ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ",
   "@contactUs": {
     "description": "Contact us text"
   },
-  "pleaseEnterPhoneNumber": "कृपया अपना फोन नंबर दर्ज करें",
+  "pleaseEnterPhoneNumber": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਫੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ",
   "@pleaseEnterPhoneNumber": {
     "description": "Phone number validation message"
   },
-  "pleaseEnterValidPhoneNumber": "कृपया एक वैध फोन नंबर दर्ज करें",
+  "pleaseEnterValidPhoneNumber": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ ਫੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ",
   "@pleaseEnterValidPhoneNumber": {
     "description": "Phone number format validation message"
   },
-  "pleaseEnterPassword": "कृपया अपना पासवर्ड दर्ज करें",
+  "pleaseEnterPassword": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਪਾਸਵਰਡ ਦਰਜ ਕਰੋ",
   "@pleaseEnterPassword": {
     "description": "Password validation message"
   },
-  "pleaseEnterDriverName": "कृपया अपना नाम दर्ज करें",
+  "pleaseEnterDriverName": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਨਾਮ ਦਰਜ ਕਰੋ",
   "@pleaseEnterDriverName": {
     "description": "Driver name validation message"
   },
-  "pleaseEnterLicenseNumber": "कृपया अपना लाइसेंस नंबर दर्ज करें",
+  "pleaseEnterLicenseNumber": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਲਾਇਸੈਂਸ ਨੰਬਰ ਦਰਜ ਕਰੋ",
   "@pleaseEnterLicenseNumber": {
     "description": "License number validation message"
   },
-  "passwordTooShort": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
+  "passwordTooShort": "ਪਾਸਵਰਡ ਘੱਟੋ ਘੱਟ 6 ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
   "@passwordTooShort": {
     "description": "Password length validation message"
   },
-  "passwordsDoNotMatch": "पासवर्ड मेल नहीं खाते",
+  "passwordsDoNotMatch": "ਪਾਸਵਰਡ ਮੇਲ ਨਹੀਂ ਖਾਂਦੇ",
   "@passwordsDoNotMatch": {
     "description": "Password confirmation validation message"
   },
-  "signInFailed": "साइन इन विफल",
+  "signInFailed": "ਸਾਈਨ ਇਨ ਅਸਫਲ",
   "@signInFailed": {
     "description": "Sign in error dialog title"
   },
-  "registrationFailed": "रजिस्ट्रेशन विफल",
+  "registrationFailed": "ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਅਸਫਲ",
   "@registrationFailed": {
     "description": "Registration error dialog title"
   },
-  "registrationSuccessful": "रजिस्ट्रेशन सफल",
+  "registrationSuccessful": "ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਸਫਲ",
   "@registrationSuccessful": {
     "description": "Registration success message"
   },
-  "accountCreated": "खाता सफलतापूर्वक बनाया गया!",
+  "accountCreated": "ਖਾਤਾ ਸਫਲਤਾਪੂਰਵਕ ਬਣਾਇਆ ਗਿਆ!",
   "@accountCreated": {
     "description": "Account created success message"
   },
-  "pleaseSignIn": "कृपया अपनी जानकारी के साथ साइन इन करें",
+  "pleaseSignIn": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀਆਂ ਪਰਮਾਣਾਂ ਨਾਲ ਸਾਈਨ ਇਨ ਕਰੋ",
   "@pleaseSignIn": {
     "description": "Please sign in message"
   },
-  "ok": "ठीक है",
+  "ok": "ਠੀਕ ਹੈ",
   "@ok": {
     "description": "OK button text"
   },
-  "cancel": "रद्द करें",
+  "cancel": "ਰੱਦ ਕਰੋ",
   "@cancel": {
     "description": "Cancel button text"
   },
-  "save": "सेव करें",
+  "save": "ਸੇਵ ਕਰੋ",
   "@save": {
     "description": "Save button text"
   },
-  "loading": "लोड हो रहा है...",
+  "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...",
   "@loading": {
     "description": "Loading text"
   },
-  "retry": "पुनः प्रयास करें",
+  "retry": "ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ",
   "@retry": {
     "description": "Retry button text"
   },
-  "error": "त्रुटि",
+  "error": "ਗਲਤੀ",
   "@error": {
     "description": "Error text"
   },
-  "success": "सफलता",
+  "success": "ਸਫਲਤਾ",
   "@success": {
     "description": "Success text"
   },
-  "warning": "चेतावनी",
+  "warning": "ਚੇਤਾਵਨੀ",
   "@warning": {
     "description": "Warning text"
   },
-  "information": "जानकारी",
+  "information": "ਜਾਣਕਾਰੀ",
   "@information": {
     "description": "Information text"
   },
-  "joinDriverPortal": "ड्राइवर पोर्टल में शामिल हों",
+  "joinDriverPortal": "ਡਰਾਈਵਰ ਪੋਰਟਲ ਵਿਚ ਸ਼ਾਮਲ ਹੋਵੋ",
   "@joinDriverPortal": {
     "description": "Join driver portal subtitle"
   },
-  "pleaseEnterFullName": "कृपया अपना पूरा नाम दर्ज करें",
+  "pleaseEnterFullName": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਪੂਰਾ ਨਾਮ ਦਰਜ ਕਰੋ",
   "@pleaseEnterFullName": {
     "description": "Full name validation message"
   },
-  "nameMinimumCharacters": "नाम कम से कम 2 अक्षर का होना चाहिए",
+  "nameMinimumCharacters": "ਨਾਮ ਘੱਟੋ ਘੱਟ 2 ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
   "@nameMinimumCharacters": {
     "description": "Name minimum length validation"
   },
-  "passwordMinimumCharacters": "पासवर्ड कम से कम 6 अक्षर का होना चाहिए",
+  "passwordMinimumCharacters": "ਪਾਸਵਰਡ ਘੱਟੋ ਘੱਟ 6 ਅੱਖਰਾਂ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
   "@passwordMinimumCharacters": {
     "description": "Password minimum length validation"
   },
-  "pleaseConfirmPassword": "कृपया अपने पासवर्ड की पुष्टि करें",
+  "pleaseConfirmPassword": "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਪਾਸਵਰਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
   "@pleaseConfirmPassword": {
     "description": "Confirm password validation message"
   },
-  "pleaseEnterValidPhone": "कृपया एक वैध फोन नंबर दर्ज करें",
+  "pleaseEnterValidPhone": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ ਫੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ",
   "@pleaseEnterValidPhone": {
     "description": "Valid phone number validation"
   },
-  "pleaseEnterValidLicense": "कृपया एक वैध लाइसेंस नंबर दर्ज करें",
+  "pleaseEnterValidLicense": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵੈਧ ਲਾਇਸੈਂਸ ਨੰਬਰ ਦਰਜ ਕਰੋ",
   "@pleaseEnterValidLicense": {
     "description": "Valid license number validation"
   },
-  "notSelected": "चयनित नहीं",
+  "notSelected": "ਚੁਣਿਆ ਨਹੀਂ ਗਿਆ",
   "@notSelected": {
     "description": "Not selected text for bus number"
   },
-  "lastUpdated": "अंतिम अपडेट",
+  "lastUpdated": "ਆਖਰੀ ਅਪਡੇਟ",
   "@lastUpdated": {
     "description": "Last updated text"
   },
-  "today": "आज",
+  "today": "ਅੱਜ",
   "@today": {
     "description": "Today text"
   },
-  "available247": "24/7 उपलब्ध",
+  "available247": "24/7 ਉਪਲਬਧ",
   "@available247": {
     "description": "Support availability text"
   },
-  "settingsTooltip": "सेटिंग्स",
+  "settingsTooltip": "ਸੈਟਿੰਗਾਂ",
   "@settingsTooltip": {
     "description": "Settings tooltip"
   },
-  "driver": "ड्राइवर",
+  "driver": "ਡਰਾਈਵਰ",
   "@driver": {
     "description": "Driver default name"
   },
-  "appearance": "दिखावट",
+  "appearance": "ਦਿੱਖ",
   "@appearance": {
     "description": "Appearance settings section"
   },
-  "account": "खाता",
+  "account": "ਖਾਤਾ",
   "@account": {
     "description": "Account settings section"
   },
-  "logoutDescription": "अपने खाते से लॉगआउट करें",
+  "logoutDescription": "ਆਪਣੇ ਖਾਤੇ ਤੋਂ ਲੌਗਆਊਟ ਕਰੋ",
   "@logoutDescription": {
     "description": "Logout description text"
   },
-  "languageChangedTo": "भाषा बदली गई",
+  "languageChangedTo": "ਭਾਸ਼ਾ ਬਦਲੀ ਗਈ",
   "@languageChangedTo": {
     "description": "Language changed message prefix"
   },
-  "darkMode": "डार्क मोड",
+  "darkMode": "ਡਾਰਕ ਮੋਡ",
   "@darkMode": {
     "description": "Dark mode setting"
   },
-  "darkThemeEnabled": "डार्क थीम सक्रिय",
+  "darkThemeEnabled": "ਡਾਰਕ ਥੀਮ ਸਰਗਰਮ",
   "@darkThemeEnabled": {
     "description": "Dark theme enabled message"
   },
-  "lightThemeEnabled": "लाइट थीम सक्रिय",
+  "lightThemeEnabled": "ਲਾਈਟ ਥੀਮ ਸਰਗਰਮ",
   "@lightThemeEnabled": {
     "description": "Light theme enabled message"
   },
-  "gpsTracking": "GPS ट्रैकिंग",
+  "gpsTracking": "GPS ਟਰੈਕਿੰਗ",
   "@gpsTracking": {
     "description": "GPS tracking title"
   },
-  "gpsTrackingStopped": "GPS ट्रैकिंग बंद",
+  "gpsTrackingStopped": "GPS ਟਰੈਕਿੰਗ ਬੰਦ",
   "@gpsTrackingStopped": {
     "description": "GPS tracking stopped message"
   },
-  "gpsTrackingStarted": "GPS ट्रैकिंग शुरू",
+  "gpsTrackingStarted": "GPS ਟਰੈਕਿੰਗ ਸ਼ੁਰੂ",
   "@gpsTrackingStarted": {
     "description": "GPS tracking started message"
   },
-  "failedToStartGpsTracking": "GPS ट्रैकिंग शुरू करने में असफल",
+  "failedToStartGpsTracking": "GPS ਟਰੈਕਿੰਗ ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਅਸਫਲ",
   "@failedToStartGpsTracking": {
     "description": "Failed to start GPS tracking message"
   },
-  "locationUpdatesBeingSent": "स्थान अपडेट भेजे जा रहे हैं",
+  "locationUpdatesBeingSent": "ਟਿਕਾਣਾ ਅਪਡੇਟ ਭੇਜੇ ਜਾ ਰਹੇ ਹਨ",
   "@locationUpdatesBeingSent": {
     "description": "Location updates being sent message"
   },
-  "location": "स्थान",
+  "location": "ਟਿਕਾਣਾ",
   "@location": {
     "description": "Location text"
   },
-  "accuracy": "सटीकता",
+  "accuracy": "ਸਟੀਕਤਾ",
   "@accuracy": {
     "description": "Accuracy abbreviation"
   },
-  "selectBus": "बस चुनें",
+  "selectBus": "ਬੱਸ ਚੁਣੋ",
   "@selectBus": {
     "description": "Select bus dialog title"
   },
-  "selectBusMessage": "GPS ट्रैकिंग शुरू करने से पहले कृपया अपनी निर्दिष्ट बस का चयन करें।\n\nआप डैशबोर्ड या बस चयन स्क्रीन से बस का चयन कर सकते हैं।",
+  "selectBusMessage": "GPS ਟਰੈਕਿੰਗ ਸ਼ੁਰੂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਨਿਰਧਾਰਿਤ ਬੱਸ ਦਾ ਚੋਣ ਕਰੋ।\n\nਤੁਸੀਂ ਡੈਸ਼ਬੋਰਡ ਜਾਂ ਬੱਸ ਚੋਣ ਸਕ੍ਰੀਨ ਤੋਂ ਬੱਸ ਦੀ ਚੋਣ ਕਰ ਸਕਦੇ ਹੋ।",
   "@selectBusMessage": {
     "description": "Select bus dialog message"
   }

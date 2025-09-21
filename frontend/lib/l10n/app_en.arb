@@ -19,6 +19,18 @@
   "@password": {
     "description": "Password field label"
   },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  "driverName": "Driver Name",
+  "@driverName": {
+    "description": "Driver name field label"
+  },
+  "licenseNumber": "License Number",
+  "@licenseNumber": {
+    "description": "License number field label"
+  },
   "signIn": "Sign In",
   "@signIn": {
     "description": "Sign in button text"
@@ -26,6 +38,14 @@
   "signUp": "Sign Up",
   "@signUp": {
     "description": "Sign up button text"
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Register button text"
+  },
+  "createAccount": "Create Account",
+  "@createAccount": {
+    "description": "Create account title"
   },
   "dontHaveAccount": "Don't have an account?",
   "@dontHaveAccount": {
@@ -63,9 +83,17 @@
   "@hindi": {
     "description": "Hindi language option"
   },
+  "punjabi": "ਪੰਜਾਬੀ",
+  "@punjabi": {
+    "description": "Punjabi language option"
+  },
   "signOut": "Sign Out",
   "@signOut": {
     "description": "Sign out button text"
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button text"
   },
   "busDetails": "Bus Details",
   "@busDetails": {
@@ -95,6 +123,66 @@
   "@trackYourRoute": {
     "description": "App subtitle"
   },
+  "driverPortal": "Driver Portal",
+  "@driverPortal": {
+    "description": "Driver portal text"
+  },
+  "startTracking": "Start Tracking",
+  "@startTracking": {
+    "description": "Start tracking button"
+  },
+  "stopTracking": "Stop Tracking",
+  "@stopTracking": {
+    "description": "Stop tracking button"
+  },
+  "locationTracking": "Location Tracking",
+  "@locationTracking": {
+    "description": "Location tracking title"
+  },
+  "trackingActive": "Tracking Active",
+  "@trackingActive": {
+    "description": "Tracking active status"
+  },
+  "trackingInactive": "Tracking Inactive",
+  "@trackingInactive": {
+    "description": "Tracking inactive status"
+  },
+  "emergencyAlert": "Emergency Alert",
+  "@emergencyAlert": {
+    "description": "Emergency alert title"
+  },
+  "sendAlert": "Send Alert",
+  "@sendAlert": {
+    "description": "Send alert button"
+  },
+  "alertSent": "Alert Sent",
+  "@alertSent": {
+    "description": "Alert sent confirmation"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications title"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About section"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "Version text"
+  },
+  "help": "Help",
+  "@help": {
+    "description": "Help section"
+  },
+  "support": "Support",
+  "@support": {
+    "description": "Support section"
+  },
+  "contactUs": "Contact Us",
+  "@contactUs": {
+    "description": "Contact us text"
+  },
   "pleaseEnterPhoneNumber": "Please enter your phone number",
   "@pleaseEnterPhoneNumber": {
     "description": "Phone number validation message"
@@ -107,13 +195,41 @@
   "@pleaseEnterPassword": {
     "description": "Password validation message"
   },
+  "pleaseEnterDriverName": "Please enter your name",
+  "@pleaseEnterDriverName": {
+    "description": "Driver name validation message"
+  },
+  "pleaseEnterLicenseNumber": "Please enter your license number",
+  "@pleaseEnterLicenseNumber": {
+    "description": "License number validation message"
+  },
   "passwordTooShort": "Password must be at least 6 characters",
   "@passwordTooShort": {
     "description": "Password length validation message"
   },
+  "passwordsDoNotMatch": "Passwords do not match",
+  "@passwordsDoNotMatch": {
+    "description": "Password confirmation validation message"
+  },
   "signInFailed": "Sign In Failed",
   "@signInFailed": {
     "description": "Sign in error dialog title"
+  },
+  "registrationFailed": "Registration Failed",
+  "@registrationFailed": {
+    "description": "Registration error dialog title"
+  },
+  "registrationSuccessful": "Registration Successful",
+  "@registrationSuccessful": {
+    "description": "Registration success message"
+  },
+  "accountCreated": "Account created successfully!",
+  "@accountCreated": {
+    "description": "Account created success message"
+  },
+  "pleaseSignIn": "Please sign in with your credentials",
+  "@pleaseSignIn": {
+    "description": "Please sign in message"
   },
   "ok": "OK",
   "@ok": {
@@ -130,5 +246,141 @@
   "loading": "Loading...",
   "@loading": {
     "description": "Loading text"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error text"
+  },
+  "success": "Success",
+  "@success": {
+    "description": "Success text"
+  },
+  "warning": "Warning",
+  "@warning": {
+    "description": "Warning text"
+  },
+  "information": "Information",
+  "@information": {
+    "description": "Information text"
+  },
+  "joinDriverPortal": "Join the driver portal",
+  "@joinDriverPortal": {
+    "description": "Join driver portal subtitle"
+  },
+  "pleaseEnterFullName": "Please enter your full name",
+  "@pleaseEnterFullName": {
+    "description": "Full name validation message"
+  },
+  "nameMinimumCharacters": "Name must be at least 2 characters",
+  "@nameMinimumCharacters": {
+    "description": "Name minimum length validation"
+  },
+  "passwordMinimumCharacters": "Password must be at least 6 characters",
+  "@passwordMinimumCharacters": {
+    "description": "Password minimum length validation"
+  },
+  "pleaseConfirmPassword": "Please confirm your password",
+  "@pleaseConfirmPassword": {
+    "description": "Confirm password validation message"
+  },
+  "pleaseEnterValidPhone": "Please enter a valid phone number",
+  "@pleaseEnterValidPhone": {
+    "description": "Valid phone number validation"
+  },
+  "pleaseEnterValidLicense": "Please enter a valid license number",
+  "@pleaseEnterValidLicense": {
+    "description": "Valid license number validation"
+  },
+  "notSelected": "Not Selected",
+  "@notSelected": {
+    "description": "Not selected text for bus number"
+  },
+  "lastUpdated": "Last Updated",
+  "@lastUpdated": {
+    "description": "Last updated text"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Today text"
+  },
+  "available247": "Available 24/7",
+  "@available247": {
+    "description": "Support availability text"
+  },
+  "settingsTooltip": "Settings",
+  "@settingsTooltip": {
+    "description": "Settings tooltip"
+  },
+  "driver": "Driver",
+  "@driver": {
+    "description": "Driver default name"
+  },
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Appearance settings section"
+  },
+  "account": "Account",
+  "@account": {
+    "description": "Account settings section"
+  },
+  "logoutDescription": "Logout from your account",
+  "@logoutDescription": {
+    "description": "Logout description text"
+  },
+  "languageChangedTo": "Language changed to",
+  "@languageChangedTo": {
+    "description": "Language changed message prefix"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Dark mode setting"
+  },
+  "darkThemeEnabled": "Dark theme enabled",
+  "@darkThemeEnabled": {
+    "description": "Dark theme enabled message"
+  },
+  "lightThemeEnabled": "Light theme enabled",
+  "@lightThemeEnabled": {
+    "description": "Light theme enabled message"
+  },
+  "gpsTracking": "GPS Tracking",
+  "@gpsTracking": {
+    "description": "GPS tracking title"
+  },
+  "gpsTrackingStopped": "GPS tracking stopped",
+  "@gpsTrackingStopped": {
+    "description": "GPS tracking stopped message"
+  },
+  "gpsTrackingStarted": "GPS tracking started",
+  "@gpsTrackingStarted": {
+    "description": "GPS tracking started message"
+  },
+  "failedToStartGpsTracking": "Failed to start GPS tracking",
+  "@failedToStartGpsTracking": {
+    "description": "Failed to start GPS tracking message"
+  },
+  "locationUpdatesBeingSent": "Location updates being sent",
+  "@locationUpdatesBeingSent": {
+    "description": "Location updates being sent message"
+  },
+  "location": "Location",
+  "@location": {
+    "description": "Location text"
+  },
+  "accuracy": "Acc",
+  "@accuracy": {
+    "description": "Accuracy abbreviation"
+  },
+  "selectBus": "Select Bus",
+  "@selectBus": {
+    "description": "Select bus dialog title"
+  },
+  "selectBusMessage": "Please select your assigned bus before starting GPS tracking.\n\nYou can select a bus from the dashboard or bus selection screen.",
+  "@selectBusMessage": {
+    "description": "Select bus dialog message"
   }
 }

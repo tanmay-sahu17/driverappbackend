@@ -29,11 +29,14 @@ class LanguageProvider extends ChangeNotifier {
 
   bool get isEnglish => _currentLocale.languageCode == 'en';
   bool get isHindi => _currentLocale.languageCode == 'hi';
+  bool get isPunjabi => _currentLocale.languageCode == 'pa';
 
   String get currentLanguageName {
     switch (_currentLocale.languageCode) {
       case 'hi':
         return 'हिंदी';
+      case 'pa':
+        return 'ਪੰਜਾਬੀ';
       case 'en':
       default:
         return 'English';

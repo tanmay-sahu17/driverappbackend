@@ -73,6 +73,7 @@ class DriverApp extends StatelessWidget {
             supportedLocales: const [
               Locale('en'), // English
               Locale('hi'), // Hindi
+              Locale('pa'), // Punjabi
             ],
             home: const AuthWrapper(),
             routes: {

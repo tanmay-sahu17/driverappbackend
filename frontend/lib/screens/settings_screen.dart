@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
           // Theme Section
           _buildSectionHeader(
             context, 
-            'Appearance', 
+            l10n.appearance, 
             Icons.palette,
           ),
           const SizedBox(height: 12),
@@ -50,7 +50,7 @@ class SettingsScreen extends StatelessWidget {
           // About Section
           _buildSectionHeader(
             context, 
-            'Information', 
+            l10n.information, 
             Icons.info,
           ),
           const SizedBox(height: 12),
@@ -61,7 +61,7 @@ class SettingsScreen extends StatelessWidget {
           // Account Section (with logout)
           _buildSectionHeader(
             context, 
-            'Account', 
+            l10n.account, 
             Icons.person,
           ),
           const SizedBox(height: 12),
@@ -117,7 +117,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 title: Text(
-                  authProvider.user?.displayName ?? 'Driver',
+                  authProvider.user?.displayName ?? l10n.driver,
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 subtitle: Text(
@@ -149,7 +149,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  'Logout from your account',
+                  l10n.logoutDescription,
                   style: TextStyle(
                     color: isDarkMode ? Colors.white70 : Colors.grey[600],
                     fontSize: 12,
@@ -311,6 +311,32 @@ class SettingsScreen extends StatelessWidget {
                   _showLanguageChangedSnackbar(context, 'हिंदी');
                 },
               ),
+              // Punjabi Option
+              ListTile(
+                leading: Radio<String>(
+                  value: 'pa',
+                  groupValue: languageProvider.currentLocale.languageCode,
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      languageProvider.changeLanguage(value);
+                      Navigator.of(context).pop();
+                      _showLanguageChangedSnackbar(context, 'ਪੰਜਾਬੀ');
+                    }
+                  },
+                  activeColor: const Color(0xFF4A9B8E),
+                ),
+                title: Text(
+                  l10n.punjabi,
+                  style: TextStyle(
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                ),
+                onTap: () {
+                  languageProvider.changeLanguage('pa');
+                  Navigator.of(context).pop();
+                  _showLanguageChangedSnackbar(context, 'ਪੰਜਾਬੀ');
+                },
+              ),
             ],
           ),
           actions: [
@@ -328,13 +354,14 @@ class SettingsScreen extends StatelessWidget {
   }
 
   void _showLanguageChangedSnackbar(BuildContext context, String languageName) {
+    final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
             const Icon(Icons.language, color: Colors.white, size: 20),
             const SizedBox(width: 8),
-            Text('Language changed to $languageName'),
+            Text('${l10n.languageChangedTo} $languageName'),
           ],
         ),
         backgroundColor: const Color(0xFF4A9B8E),
@@ -349,6 +376,7 @@ class SettingsScreen extends StatelessWidget {
 
   Widget _buildThemeSelector(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
@@ -371,7 +399,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             title: Text(
-              'Dark Mode',
+              l10n.darkMode,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
@@ -379,7 +407,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              themeProvider.isDarkMode ? 'Dark theme enabled' : 'Light theme enabled',
+              themeProvider.isDarkMode ? l10n.darkThemeEnabled : l10n.lightThemeEnabled,
               style: TextStyle(
                 fontSize: 12,
                 color: isDarkMode ? Colors.grey[400] : Colors.grey[600],

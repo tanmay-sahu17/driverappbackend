@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import '../providers/location_provider.dart';
 import '../widgets/bus_selector.dart';
@@ -46,12 +47,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Bus Driver',
-          style: TextStyle(
+        title: Text(
+          l10n.driverPortal,
+          style: const TextStyle(
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -88,9 +90,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       size: 18,
                     ),
                     const SizedBox(width: 4),
-                    const Text(
-                      'SOS',
-                      style: TextStyle(
+                    Text(
+                      l10n.sosAlert,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -111,7 +113,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               );
             },
-            tooltip: 'Settings',
+            tooltip: l10n.settingsTooltip,
           ),
         ],
       ),
@@ -174,16 +176,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Welcome back!',
-                                      style: TextStyle(
+                                    Text(
+                                      l10n.welcome,
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     Text(
-                                      authProvider.user?.displayName ?? 'Driver',
+                                      authProvider.user?.displayName ?? l10n.driver,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -197,7 +199,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           const SizedBox(height: 12),
                           Text(
-                            'Ready to start your driving session?',
+                            l10n.signInToContinue,
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.9),
                               fontSize: 14,
@@ -219,8 +221,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Expanded(
                           child: _buildStatusCard(
                             icon: Icons.directions_bus,
-                            title: 'Bus Status',
-                            value: locationProvider.selectedBusNumber ?? 'Not Selected',
+                            title: l10n.busDetails,
+                            value: locationProvider.selectedBusNumber ?? l10n.notSelected,
                             color: locationProvider.selectedBusNumber != null 
                                 ? Colors.green 
                                 : Colors.orange,
@@ -230,8 +232,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Expanded(
                           child: _buildStatusCard(
                             icon: Icons.gps_fixed,
-                            title: 'GPS Status',
-                            value: locationProvider.isTracking ? 'Active' : 'Inactive',
+                            title: l10n.locationTracking,
+                            value: locationProvider.isTracking ? l10n.trackingActive : l10n.trackingInactive,
                             color: locationProvider.isTracking 
                                 ? Colors.green 
                                 : Colors.red,
@@ -275,7 +277,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              'Info',
+                              l10n.information,
                               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.w500,
                                 color: isDarkMode ? Colors.white70 : Colors.grey[700],
@@ -285,9 +287,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         const SizedBox(height: 12),
                         
-                        _buildInfoRow('Version', 'v1.0.0'),
-                        _buildInfoRow('Last Updated', 'Today'),
-                        _buildInfoRow('Support', 'Available 24/7'),
+                        _buildInfoRow(l10n.version, 'v1.0.0'),
+                        _buildInfoRow(l10n.lastUpdated, l10n.today),
+                        _buildInfoRow(l10n.support, l10n.available247),
                       ],
                     ),
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/auth_provider.dart';
 import 'dashboard_screen.dart';
 
@@ -52,11 +53,12 @@ class _SignupScreenState extends State<SignupScreen> {
       } else if (authProvider.signUpError != null && 
                  authProvider.signUpError!.contains('Account created successfully')) {
         // Registration successful but need manual signin
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Account created successfully! Please sign in.'),
+            content: Text(l10n.accountCreated + ' ' + l10n.pleaseSignIn),
             backgroundColor: Colors.green,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
         
@@ -70,6 +72,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
@@ -80,7 +83,7 @@ class _SignupScreenState extends State<SignupScreen> {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: const Text('Sign Up Failed'),
+                title: Text(l10n.registrationFailed),
                 content: Text(authProvider.signUpError!),
                 actions: [
                   TextButton(
@@ -88,7 +91,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       Navigator.of(context).pop();
                       authProvider.clearSignUpError();
                     },
-                    child: const Text('OK'),
+                    child: Text(l10n.ok),
                   ),
                 ],
               ),
@@ -167,7 +170,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 children: [
                       // Header
                       Text(
-                        'Create Account',
+                        l10n.createAccount,
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[800],
@@ -176,7 +179,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       
                       Text(
-                        'Join the driver portal',
+                        l10n.joinDriverPortal,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -201,18 +204,18 @@ class _SignupScreenState extends State<SignupScreen> {
                           controller: _nameController,
                           textInputAction: TextInputAction.next,
                           textCapitalization: TextCapitalization.words,
-                          decoration: const InputDecoration(
-                            labelText: 'Full Name',
-                            prefixIcon: Icon(Icons.person_outline),
-                            border: OutlineInputBorder(
+                          decoration: InputDecoration(
+                            labelText: l10n.driverName,
+                            prefixIcon: const Icon(Icons.person_outline),
+                            border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide.none,
                             ),
-                            enabledBorder: OutlineInputBorder(
+                            enabledBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide.none,
                             ),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide(color: Color(0xFF4A9B8E), width: 2),
                             ),
@@ -221,10 +224,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your full name';
+                              return l10n.pleaseEnterFullName;
                             }
                             if (value.trim().length < 2) {
-                              return 'Name must be at least 2 characters';
+                              return l10n.nameMinimumCharacters;
                             }
                             return null;
                           },
@@ -250,7 +253,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           obscureText: _obscurePassword,
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
-                            labelText: 'Password',
+                            labelText: l10n.password,
                             prefixIcon: const Icon(Icons.lock_outline),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -281,10 +284,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter a password';
+                              return l10n.pleaseEnterPassword;
                             }
                             if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
+                              return l10n.passwordMinimumCharacters;
                             }
                             return null;
                           },
@@ -311,7 +314,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           textInputAction: TextInputAction.done,
                           onFieldSubmitted: (_) => _handleSignup(),
                           decoration: InputDecoration(
-                            labelText: 'Confirm Password',
+                            labelText: l10n.confirmPassword,
                             prefixIcon: const Icon(Icons.lock_outline),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -342,10 +345,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please confirm your password';
+                              return l10n.pleaseConfirmPassword;
                             }
                             if (value != _passwordController.text) {
-                              return 'Passwords do not match';
+                              return l10n.passwordsDoNotMatch;
                             }
                             return null;
                           },
@@ -370,18 +373,18 @@ class _SignupScreenState extends State<SignupScreen> {
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
                           textInputAction: TextInputAction.next,
-                          decoration: const InputDecoration(
-                            labelText: 'Phone Number',
-                            prefixIcon: Icon(Icons.phone_outlined),
-                            border: OutlineInputBorder(
+                          decoration: InputDecoration(
+                            labelText: l10n.phoneNumber,
+                            prefixIcon: const Icon(Icons.phone_outlined),
+                            border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide.none,
                             ),
-                            enabledBorder: OutlineInputBorder(
+                            enabledBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide.none,
                             ),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide(color: Color(0xFF4A9B8E), width: 2),
                             ),
@@ -390,10 +393,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
+                              return l10n.pleaseEnterPhoneNumber;
                             }
                             if (value.length < 10) {
-                              return 'Please enter a valid phone number';
+                              return l10n.pleaseEnterValidPhone;
                             }
                             return null;
                           },
@@ -418,18 +421,18 @@ class _SignupScreenState extends State<SignupScreen> {
                           controller: _licenseController,
                           textInputAction: TextInputAction.done,
                           onFieldSubmitted: (_) => _handleSignup(),
-                          decoration: const InputDecoration(
-                            labelText: 'License Number',
-                            prefixIcon: Icon(Icons.badge_outlined),
-                            border: OutlineInputBorder(
+                          decoration: InputDecoration(
+                            labelText: l10n.licenseNumber,
+                            prefixIcon: const Icon(Icons.badge_outlined),
+                            border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide.none,
                             ),
-                            enabledBorder: OutlineInputBorder(
+                            enabledBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide.none,
                             ),
-                            focusedBorder: OutlineInputBorder(
+                            focusedBorder: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12)),
                               borderSide: BorderSide(color: Color(0xFF4A9B8E), width: 2),
                             ),
@@ -438,10 +441,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your license number';
+                              return l10n.pleaseEnterLicenseNumber;
                             }
                             if (value.length < 5) {
-                              return 'Please enter a valid license number';
+                              return l10n.pleaseEnterValidLicense;
                             }
                             return null;
                           },
@@ -477,9 +480,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                     ),
                                   ),
                                 )
-                              : const Text(
-                                  'Create Account',
-                                  style: TextStyle(
+                              : Text(
+                                  l10n.createAccount,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -495,14 +498,14 @@ class _SignupScreenState extends State<SignupScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Already have an account? ",
+                            l10n.alreadyHaveAccount,
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
+                            child: Text(
+                              l10n.signIn,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
